@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SighIn">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/background"
+        tools:ignore="ContentDescription"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:id="@+id/signIn"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:gravity="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:layout_below="@id/signIn"
+        android:background="#30ffffff"
+        android:hint="Username"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:layout_below="@id/username"
+        android:background="#30ffffff"
+        android:hint="Password"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        />
+
+    <EditText
+        android:id="@+id/Verif_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#30ffffff"
+        android:hint="Password Verification"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <EditText
+        android:id="@+id/displayName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Verif_password"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#30ffffff"
+        android:hint="DisplayName"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <!-- ImageView to display the chosen picture -->
+    <ImageView
+        android:id="@+id/chosenPictureImageView"
+        android:layout_width="124dp"
+        android:layout_height="104dp"
+        android:layout_below="@id/displayName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="139dp"
+        android:src="@drawable/smily" />
+
+
+
+    <!-- Label for Profile Picture -->
+    <TextView
+        android:id="@+id/profilePicLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chosenPictureImageView"
+        android:text="Profile Picture"
+        android:textColor="@color/white"
+        android:background="#30ffffff"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"/>
+
+    <!-- Button for adding Profile Picture -->
+    <Button
+        android:id="@+id/addProfilePicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profilePicLabel"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black"
+        android:text="Add Picture"
+        android:layout_marginTop="16dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
+
+    <!-- Button for adding Profile Picture -->
+    <Button
+        android:id="@+id/signInBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addProfilePicButton"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black"
+        android:text="@string/sign_in"
+        android:layout_marginTop="16dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
+
+    <!-- Textview for the hyperlink -->
+    <TextView
+        android:id="@+id/loginLinkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signInBottom"
+        android:layout_centerHorizontal="true"
+        android:text="@string/already_registered_click_here"
+        android:textColor="#30f"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:clickable="true" />
+
+
+
+</RelativeLayout>
