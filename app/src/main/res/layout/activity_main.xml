@@ -89,7 +89,7 @@
         android:layout_below="@id/displayName"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="139dp"
-        android:src="@drawable/smily" />
+        android:src="@drawable/smileTalkLogo" />
 
 
 

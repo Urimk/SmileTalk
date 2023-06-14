@@ -81,7 +81,7 @@
       android:layout_marginStart="110dp"
       android:layout_width="183dp"
       android:layout_height="146dp"
-      app:srcCompat="@drawable/smily" />
+      app:srcCompat="@drawable/smileTalkLogo" />
 
   <!-- Textview for the hyperlink -->
   <TextView
