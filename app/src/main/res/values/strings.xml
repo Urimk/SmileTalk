@@ -4,4 +4,5 @@
     <string name="sign_in">Sign in</string>
     <string name="not_registered_click_here">Not registered? click here</string>
     <string name="firebaseid">smiletalk-62fd7</string>
+    <string name="login">login</string>
 </resources>
