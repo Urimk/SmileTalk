@@ -5,13 +5,23 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
 public class User {
-    @PrimaryKey
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String username;
     private String password;
     private String displayName;
     private String profilePic;
 
     public User(String username, String password, String displayName, String profilePic) {
+        this.id = 0;
         this.username = username;
         this.password = password;
         this.displayName = displayName;

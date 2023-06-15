@@ -2,13 +2,18 @@ package com.example.smiletalk;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.ArrayList;
 
 @Entity(tableName = "chats")
 public class Chat {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @TypeConverters(UserListConverter.class)
     private ArrayList<User> users;
+
+    @TypeConverters(MessageListConverter.class)
     private ArrayList<Message> messages;
 
     public Chat(ArrayList<User> users, ArrayList<Message> messages) {
