@@ -36,19 +36,24 @@
         android:textColor="@color/white"
         android:layout_margin="10dp"
         android:padding="20dp"
+        android:drawableLeft="@drawable/person"
         />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
         android:layout_below="@id/username"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
         android:hint="Password"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
         android:padding="20dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:drawableLeft="@drawable/security"
         />
 
     <EditText
@@ -64,7 +69,9 @@
         android:hint="Password Verification"
         android:padding="20dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColorHint="@color/white"
+        android:drawableLeft="@drawable/verification"
+        />
 
     <EditText
         android:id="@+id/displayName"
@@ -79,7 +86,9 @@
         android:hint="DisplayName"
         android:padding="20dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColorHint="@color/white"
+        android:drawableLeft="@drawable/face"
+        />
 
     <!-- ImageView to display the chosen picture -->
     <ImageView
@@ -88,8 +97,9 @@
         android:layout_height="104dp"
         android:layout_below="@id/displayName"
         android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginEnd="139dp"
-        android:src="@drawable/smileTalkLogo" />
+        android:src="@drawable/smiletalklogo" />
 
 
 
