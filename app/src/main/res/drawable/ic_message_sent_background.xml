@@ -1,12 +1,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:startColor="@color/msg_rec_start"
-        android:endColor="@color/msg_rec_end"
-        android:angle="222" />
+    <solid android:color="@color/msg_sent" />
     <corners
         android:radius="30dp"
         android:topLeftRadius="30dp"
-        android:topRightRadius="30dp"
+        android:topRightRadius="20dp"
         android:bottomLeftRadius="30dp"
         android:bottomRightRadius="2dp" />
 </shape>

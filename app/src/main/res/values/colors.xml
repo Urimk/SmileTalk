@@ -7,4 +7,6 @@
     <color name="red">#FF6A68</color>
     <color name="msg_rec_start">#0495FF</color>
     <color name="msg_rec_end">#7646FE</color>
+    <color name="msg_sent">#EEEEEE</color>
+
 </resources>
