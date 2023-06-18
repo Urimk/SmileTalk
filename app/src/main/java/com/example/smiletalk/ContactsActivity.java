@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_contacts);
 
         // Initialize RecyclerView
         rvContacts = findViewById(R.id.rvContacts);
@@ -48,10 +46,10 @@ public class ContactsActivity extends AppCompatActivity {
     private List<Chat> generateChats() {
         List<User> users1 = new ArrayList<>();
         List<User> users2 = new ArrayList<>();
-        users1.add(new User("Uri", "Qqwwee11", "Uri", "1"));
-        users1.add(new User("Roni", "Qqwwee11", "Roni", "1"));
-        users2.add(new User("Aba", "Qqwwee11", "Aba", "1"));
-        users2.add(new User("Ima", "Qqwwee11", "Ima", "1"));
+        users1.add(new User("Uri", "Qqwwee11", "Uri", null));
+        users1.add(new User("Roni", "Qqwwee11", "Roni", null));
+        users2.add(new User("Aba", "Qqwwee11", "Aba", null));
+        users2.add(new User("Ima", "Qqwwee11", "Ima", null));
 
         List<Message> msgs1 = new ArrayList<>();
         List<Message> msgs2 = new ArrayList<>();
@@ -59,8 +57,8 @@ public class ContactsActivity extends AppCompatActivity {
         msgs1.add(new Message(users1.get(0), "00:00:00", "Hey!"));
         msgs1.add(new Message(users1.get(1), "00:00:00", "sup?"));
 
-        msgs2.add(new Message(users2.get(4), "00:01:00", "Heyyyy!"));
-        msgs1.add(new Message(users2.get(3), "00:01:00", "sup?"));
+        msgs2.add(new Message(users2.get(0), "00:01:00", "Heyyyy!"));
+        msgs1.add(new Message(users2.get(1), "00:01:00", "sup?"));
 
 
         List<Chat> chats = new ArrayList<>();

@@ -83,7 +83,30 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     }
 
     private Bitmap decodeBase64(String base64String) {
-        byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        if (base64String != null && isValidBase64(base64String)) {
+            try {
+                byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            } catch (IllegalArgumentException e) {
+                // Handle invalid Base64 string
+                e.printStackTrace();
+            }
+        }
+        // Return null or a default Bitmap in case of invalid input or null string
+        return null;
+    }
+
+    private boolean isValidBase64(String base64String) {
+        // Check if the length is a multiple of 4 (a requirement for Base64)
+        if (base64String.length() % 4 != 0) {
+            return false;
+        }
+        // Check if the string contains valid Base64 characters
+        for (char c : base64String.toCharArray()) {
+            if (!(Character.isLetterOrDigit(c) || c == '+' || c == '/' || c == '=')) {
+                return false;
+            }
+        }
+        return true;
     }
 }
