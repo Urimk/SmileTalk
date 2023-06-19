@@ -9,10 +9,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface UserAPI {
-    @GET("Users/:userName")
+    @GET("Users/{userName}")
     Call<User> getUser();
 
-    @POST("Users/")
-    Call<Void> createUser(@Body User user);
+    @POST("Users")
+    Call<User> createUser(@Body User user);
 }
 

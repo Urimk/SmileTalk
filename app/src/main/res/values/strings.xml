@@ -5,4 +5,6 @@
     <string name="not_registered_click_here">Not registered? click here</string>
     <string name="firebaseid">smiletalk-62fd7</string>
     <string name="login">login</string>
+    <string name="Login">Login</string>
+    <string name="BaseUrl">http://10.0.2.2:5000/api/</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.smiletalk;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
@@ -15,25 +16,54 @@ public class User {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String username;
+    private String userName;
     private String password;
     private String displayName;
     private String profilePic;
 
-    public User(String username, String password, String displayName, String profilePic) {
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    private String token;
+
+    public User(String userName, String password, String displayName, String profilePic) {
         this.id = 0;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.displayName = displayName;
         this.profilePic = profilePic;
     }
-
-    public String getUsername() {
-        return username;
+@Ignore
+    public User(String userName, String password) {
+        this.id = 0;
+        this.userName = userName;
+        this.password = password;
+        this.displayName = "";
+        this.profilePic = "";
+        this.token = "";
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Ignore
+    public User(String userName) {
+        this.id = 0;
+        this.userName = userName;
+        this.password = "";
+        this.displayName = "";
+        this.profilePic = "";
+        this.token = "";
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
