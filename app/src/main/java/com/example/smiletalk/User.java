@@ -17,6 +17,7 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String userName;
+
     private String password;
     private String displayName;
     private String profilePic;

@@ -42,7 +42,7 @@ public class SighIn extends AppCompatActivity {
         return context;
     }
 
-    public static Context context;
+    public Context context;
 
 
     private boolean checkPassword(String password){
@@ -165,7 +165,6 @@ public class SighIn extends AppCompatActivity {
                                         try {
                                             startActivity(intent);
                                         }catch (Exception e){
-                                            System.out.println(e);
                                         }
                                     } else {
                                         usernameLable.setError("This userName is already exist, pic " + "another one");
@@ -191,7 +190,6 @@ public class SighIn extends AppCompatActivity {
                 try {
                     startActivity(intent);
                 }catch (Exception e){
-                   System.out.println(e);
                 }
 
             }
@@ -202,20 +200,3 @@ public class SighIn extends AppCompatActivity {
 
 
 }
-/*
-.thenAccept(result -> {
-                            if (result) {
-                                //go to the login screen
-                                // Define the action to start the login activity here
-                                Intent intent = new Intent(this, Login.class);
-                                try {
-                                    startActivity(intent);
-                                } catch (Exception e) {
-                                    System.out.println(e);
-                                }
-                            } else {
-                                popupWindowClick(view, "This userName is already exists, please" +
-                                        "pick another one");
-                            }
-                        })
- */

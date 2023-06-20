@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.CompletableFuture;
 
 import okhttp3.OkHttpClient;
@@ -68,7 +70,7 @@ public class Server {
         Call<User> call = this.user.createUser(user);
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
                     future.complete(true);
                 } else {
@@ -91,29 +93,34 @@ public class Server {
 
     public CompletableFuture<Boolean> loginUser(User user, Context login) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
-        Call<User> call = this.token.sighnIn(user);
+        Call<String> call = this.token.logIn(new LoginUser(user.getUserName(),user.getPassword()));
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    user.setToken(response.toString());
-                    future.complete(true);
+                    String token = response.body();
+                        user.setToken(token);
+                        future.complete(true);
+
                 } else {
                     future.complete(false);
+                    Toast.makeText(login, "Server did not respond " + response.code(), Toast.LENGTH_SHORT).show();
+                    System.out.println("Response Code: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.d("Sign", "Token API call failed: " + t.getMessage());
-                Toast.makeText(login, "Server did not respond", Toast.LENGTH_SHORT).show();
+                Toast.makeText(login, "Server did not respond!!!!!", Toast.LENGTH_SHORT).show();
                 future.complete(false);
             }
         });
 
         return future;
     }
+
 
 
 
