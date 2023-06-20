@@ -121,6 +121,36 @@ public class Server {
         return future;
     }
 
+    public CompletableFuture<Boolean> getUser(User user, Context login) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        Call<User> call = this.user.getUser(user.getUserName(),user.getToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    user.setProfilePic(response.body().getProfilePic());
+                    user.setDisplayName(response.body().getDisplayName());
+                    future.complete(true);
+
+                } else {
+                    future.complete(false);
+                    Toast.makeText(login, "Server did not respond " + response.code(), Toast.LENGTH_SHORT).show();
+                    System.out.println("Response Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("Sign", "Token API call failed: " + t.getMessage());
+                Toast.makeText(login, "Server did not respond!!!!!", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+        return future;
+    }
+
 
 
 

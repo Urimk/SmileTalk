@@ -15,13 +15,14 @@ public interface ChatAPI {
     Call<List<Chat>> getChats(@Header("Authorization") String authorization);
 
     @GET("Chats/{id}")
-    Call<Chat> getChat(@Header("Authorization") String authorization);
+    Call<Chat> getChat(@Path("id") int id,@Header("Authorization") String authorization);
 
     @GET("Chats/{id}:Messages")
-    Call<List<Message>> getMessages(@Header("Authorization") String authorization);
+    Call<List<Message>> getMessages(@Path("id") int id,@Header("Authorization") String authorization);
 
     @POST("Chats/{id}:Messages")
-    Call<Message> postMessege(@Body Message msg,@Header("Authorization") String authorization);
+    Call<Message> postMessege(@Path("id") int id,@Body Message msg,
+                              @Header("Authorization") String authorization);
 
     @POST("Chats")
     Call<Void> createChat(@Body User contact, @Header("Authorization") String authorization);

@@ -38,8 +38,10 @@ public class Login extends AppCompatActivity {
                             server.loginUser(user, this).thenAccept(result -> {
                                 if (result) {
                                     // Handle the true value
+                                    server.getUser(user,this);
                                     //go to login screen
-                                    Intent intent = new Intent(this, SighIn.class);
+                                    Intent intent = new Intent(this, ContactsActivity.class);
+                                    intent.putExtra("user", user);
                                     try {
                                         startActivity(intent);
                                     }catch (Exception e){
