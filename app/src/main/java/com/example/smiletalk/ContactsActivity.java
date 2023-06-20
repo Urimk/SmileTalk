@@ -5,6 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,26 @@ public class ContactsActivity extends AppCompatActivity {
         adapter = new ContactAdapter(contactList, curUser);
         rvContacts.setAdapter(adapter);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddContactFragment fragment = new AddContactFragment();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+                findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+            }
+
+
+        });
+
+
+
         // Set click listener for the main activity layout
        /* findViewById(android.R.id.content).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -41,6 +65,12 @@ public class ContactsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 
     private List<Chat> generateChats() {
