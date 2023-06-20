@@ -13,6 +13,6 @@ public interface UserAPI {
     Call<User> getUser();
 
     @POST("Users/")
-    Call<Void> createUser(@Body User user);
+    Call<User> createUser(@Body User user);
 }
 

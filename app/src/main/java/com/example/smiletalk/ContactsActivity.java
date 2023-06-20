@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity implements AddContactListener {
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;
@@ -33,6 +33,7 @@ public class ContactsActivity extends AppCompatActivity {
         // Prepare data
         contactList = generateChats();
         curUser = new User("Uri", "Qqwwee11", "Uri", "1");
+
         // Set up the adapter
         adapter = new ContactAdapter(contactList, curUser);
         rvContacts.setAdapter(adapter);
@@ -42,6 +43,7 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AddContactFragment fragment = new AddContactFragment();
+                fragment.setAddContactListener(ContactsActivity.this);
 
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -51,20 +53,7 @@ public class ContactsActivity extends AppCompatActivity {
 
                 findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
             }
-
-
         });
-
-
-
-        // Set click listener for the main activity layout
-       /* findViewById(android.R.id.content).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Start the new activity when the layout is clicked
-                //Intent intent = new Intent(ContactsActivity.this, ChatActivity.class);
-                startActivity(intent);
-            }
-        });*/
     }
 
     @Override
@@ -90,7 +79,6 @@ public class ContactsActivity extends AppCompatActivity {
         msgs2.add(new Message(users2.get(0), "00:01:00", "Heyyyy!"));
         msgs1.add(new Message(users2.get(1), "00:01:00", "sup?"));
 
-
         List<Chat> chats = new ArrayList<>();
 
         // Add sample contacts with messages
@@ -100,5 +88,15 @@ public class ContactsActivity extends AppCompatActivity {
         return chats;
     }
 
+    public void onChatsAdded(List<Chat> chats) {
+        // Add the new chat to the contactList
+        contactList.addAll(chats);
 
+        // Notify the adapter of the data change
+        adapter.notifyDataSetChanged();
+
+        // Hide the overlay
+        findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+    }
 }
+
