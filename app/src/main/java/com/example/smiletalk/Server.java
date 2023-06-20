@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import okhttp3.OkHttpClient;
@@ -127,8 +128,9 @@ public class Server {
 
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     user.setProfilePic(response.body().getProfilePic());
                     user.setDisplayName(response.body().getDisplayName());
                     future.complete(true);
@@ -147,6 +149,165 @@ public class Server {
                 future.complete(false);
             }
         });
+
+        return future;
+    }
+
+    public CompletableFuture<Boolean> createChat(String token,User otherUser,Chat empty , Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<Chat> call = this.chat.createChat(otherUser,token);
+        call.enqueue(new Callback<Chat>() {
+            @Override
+            public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                    assert response.body() != null;
+                    empty.setId(response.body().getId());
+                    empty.setUsers(response.body().getUsers());
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Chat> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+
+        return future;
+    }
+    public CompletableFuture<Boolean> deleteChat(int chatID, Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<Chat> call = this.chat.deleteChat(chatID);
+        call.enqueue(new Callback<Chat>() {
+            @Override
+            public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
+                if (response.code() == 204) {
+                    future.complete(true);
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Chat> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+
+        return future;
+    }
+
+    public CompletableFuture<Boolean> getChats(String token, List<Chat> chats, Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<List<Chat>> call = this.chat.getChats(token);
+        call.enqueue(new Callback<List<Chat>>() {
+            @Override
+            public void onResponse(Call<List<Chat>> call, @NonNull Response<List<Chat>> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                    assert response.body() != null;
+                    chats.addAll(response.body());
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Chat>> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+
+        return future;
+    }
+    public CompletableFuture<Boolean> getChat(String token, int chatID, Chat empty,Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<Chat> call = this.chat.getChat(chatID,token);
+        call.enqueue(new Callback<Chat>() {
+            @Override
+            public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                    assert response.body() != null;
+                    empty.setId(response.body().getId());
+                    empty.setUsers(response.body().getUsers());
+                    empty.setMessages(response.body().getMessages());
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Chat> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+
+        return future;
+    }
+
+    public CompletableFuture<Boolean> getMessages(String token, int chatID,List<Message> messages,Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<List<Message>> call = this.chat.getMessages(chatID,token);
+        call.enqueue(new Callback<List<Message>>() {
+            @Override
+            public void onResponse(Call<List<Message>> call, @NonNull Response<List<Message>> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                    assert response.body() != null;
+                    messages.addAll(response.body());
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Message>> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
+
+        return future;
+    }
+
+    public CompletableFuture<Boolean> sendMessage(String token, int chatID,Message msg,Context chat)  {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        Call<Message> call = this.chat.postMessege(chatID,msg,token);
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, @NonNull Response<Message> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                } else {
+                    future.complete(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
+                future.complete(false);
+            }
+        });
+
 
         return future;
     }

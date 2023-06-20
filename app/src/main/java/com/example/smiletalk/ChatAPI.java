@@ -25,8 +25,8 @@ public interface ChatAPI {
                               @Header("Authorization") String authorization);
 
     @POST("Chats")
-    Call<Void> createChat(@Body User contact, @Header("Authorization") String authorization);
+    Call<Chat> createChat(@Body User contact, @Header("Authorization") String authorization);
 
     @DELETE("Chats/{id}")
-    Call<Void> deleteChat(@Path("id") int id);
+    Call<Chat> deleteChat(@Path("id") int id);
 }
