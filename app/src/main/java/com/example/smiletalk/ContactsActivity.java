@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsActivity extends AppCompatActivity implements AddContactListener {
+public class ContactsActivity extends AppCompatActivity implements AddContactListener, DeleteContactListener  {
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;
@@ -35,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         curUser = new User("Uri", "Qqwwee11", "Uri", "1");
 
         // Set up the adapter
-        adapter = new ContactAdapter(contactList, curUser);
+        adapter = new ContactAdapter(contactList, curUser, this);
         rvContacts.setAdapter(adapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -55,6 +55,24 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
             }
         });
     }
+
+    @Override
+    public void onContactDeleted(int position) {
+        DeleteContactFragment fragment = new DeleteContactFragment(contactList, position);
+        // Pass the index of the item to the fragment
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        fragment.setArguments(args);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(android.R.id.content, fragment)
+                .addToBackStack(null)
+                .commit();
+
+        findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public void onBackPressed() {

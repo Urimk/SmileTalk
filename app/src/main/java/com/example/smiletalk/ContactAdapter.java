@@ -9,27 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.smiletalk.User;
-
-import java.util.List;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,9 +23,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private User curUser;
     private Context context;
 
-    public ContactAdapter(List<Chat> contactList, User curUser) {
+    private DeleteContactListener deleteContactListener;
+
+    public ContactAdapter(List<Chat> contactList, User curUser, DeleteContactListener deleteContactListener) {
         this.contactList = contactList;
         this.curUser = curUser;
+        this.deleteContactListener = deleteContactListener;
     }
 
     @NonNull
@@ -59,7 +41,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
-        Chat chat = contactList.get(position);
+        Chat chat = contactList.get(holder.getAdapterPosition());
         User otherUser = null;
         for (User user : chat.getUsers()) {
             if (!user.getUsername().equals(getCurUser().getUsername())) {
@@ -67,6 +49,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 break;
             }
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (deleteContactListener != null) {
+                    int clickedPosition = holder.getAdapterPosition();
+                    deleteContactListener.onContactDeleted(clickedPosition);
+                }
+            }
+        });
+
         holder.nameTextView.setText(otherUser.getUsername());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
         if (bitmap != null) {
@@ -126,4 +119,3 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return true;
     }
 }
-
