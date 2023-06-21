@@ -34,25 +34,29 @@ public class Login extends AppCompatActivity {
 
                     EditText passwordLable = findViewById(R.id.password);
                     String password = passwordLable.getText().toString();
-                    User user = new User(username,password);
-                            server.loginUser(user, this).thenAccept(result -> {
+                    User user = new User(username, password);
+                    server.loginUser(user, this).thenAccept(res -> {
+                        if (res) {
+                            // Handle the true value
+                            server.getUser(user, this).thenAccept(result -> {
                                 if (result) {
-                                    // Handle the true value
-                                    server.getUser(user,this);
                                     //go to login screen
                                     Intent intent = new Intent(this, ContactsActivity.class);
                                     intent.putExtra("user", user);
                                     try {
                                         startActivity(intent);
-                                    }catch (Exception e){
+                                    } catch (Exception e) {
                                         System.out.println(e);
                                     }
                                 } else {
                                     usernameLable.setError("Incorrect userName or password");
                                 }
                             });
+                        }
 
-                        });
+                    });
+                });
+
 
 
         TextView registered = findViewById(R.id.registerLinkTextView);

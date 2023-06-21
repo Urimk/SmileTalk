@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 
 public interface UserAPI {
     @GET("Users/{userName}")
-    Call<User> getUser(@Path("userName") String userName, @Header("Authorization") String authorization);
+    Call<User> getUser(@Path("userName") String userName, @Header("authorization") String authorization);
 
     @POST("Users")
     Call<User> createUser(@Body User user);

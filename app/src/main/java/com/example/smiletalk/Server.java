@@ -130,10 +130,11 @@ public class Server {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
+                    future.complete(true);
                     assert response.body() != null;
                     user.setProfilePic(response.body().getProfilePic());
                     user.setDisplayName(response.body().getDisplayName());
-                    future.complete(true);
+
 
                 } else {
                     future.complete(false);

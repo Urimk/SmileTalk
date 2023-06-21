@@ -13,7 +13,8 @@
       android:layout_height="match_parent"
       android:scaleType="fitXY"
       android:src="@drawable/background"
-      tools:ignore="ContentDescription" />
+      tools:ignore="ContentDescription"
+      />
 
   <TextView
       android:id="@+id/signIn"
@@ -30,6 +31,7 @@
       android:textStyle="bold" />
 
   <EditText
+      android:drawableLeft="@drawable/person"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/userName"
@@ -70,7 +72,9 @@
       android:layout_width="183dp"
       android:layout_height="146dp"
       android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"/>
+      android:layout_centerVertical="true"
+      android:src="@drawable/smiletalklogo"
+      />
 
   <!-- Textview for the hyperlink -->
   <Button

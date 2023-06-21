@@ -44,12 +44,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Chat chat = contactList.get(position);
         User otherUser = null;
         for (User user : chat.getUsers()) {
-            if (!user.getUsername().equals(getCurUser().getUsername())) {
+            if (!user.getUserName().equals(getCurUser().getUserName())) {
                 otherUser = user;
                 break;
             }
         }
-        holder.nameTextView.setText(otherUser.getUsername());
+        holder.nameTextView.setText(otherUser.getUserName());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
         if (bitmap != null) {
             holder.avatarImageView.setImageBitmap(bitmap);
