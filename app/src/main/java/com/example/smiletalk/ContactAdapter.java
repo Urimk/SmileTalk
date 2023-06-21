@@ -50,13 +50,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             }
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 if (deleteContactListener != null) {
                     int clickedPosition = holder.getAdapterPosition();
-                    deleteContactListener.onContactDeleted(clickedPosition);
+                    deleteContactListener.showDeleteContactDialog(clickedPosition);
+                    return true; // Consume the long click event
                 }
+                return false; // Continue with regular click event handling
             }
         });
 

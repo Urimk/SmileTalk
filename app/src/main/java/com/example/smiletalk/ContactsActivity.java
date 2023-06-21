@@ -1,6 +1,7 @@
 package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,47 +32,82 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         // Prepare data
-        contactList = generateChats();
+        contactList = new ArrayList<Chat>();
         curUser = new User("Uri", "Qqwwee11", "Uri", "1");
 
         // Set up the adapter
         adapter = new ContactAdapter(contactList, curUser, this);
         rvContacts.setAdapter(adapter);
 
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddContactFragment fragment = new AddContactFragment();
-                fragment.setAddContactListener(ContactsActivity.this);
+                // Check if the AddContactFragment is already added
+                Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
+                Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
 
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(android.R.id.content, fragment)
-                        .addToBackStack(null)
-                        .commit();
+                if (addContactFragment == null && deleteContactFragment == null) {
+                    // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding AddContactFragment
+                    AddContactFragment fragment = new AddContactFragment();
+                    fragment.setAddContactListener(ContactsActivity.this);
 
-                findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(android.R.id.content, fragment, "AddContactFragment")
+                            .addToBackStack(null)
+                            .commit();
+
+                    findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+                }
             }
         });
+
+    }
+
+    public void showDeleteContactDialog(int position) {
+        // Check if the AddContactFragment is already added
+        Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
+        Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+
+        if (addContactFragment == null && deleteContactFragment == null) {
+            // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding DeleteContactFragment
+            DeleteContactFragment fragment = new DeleteContactFragment(position);
+            // Pass the index of the item to the fragment
+            Bundle args = new Bundle();
+            args.putInt("position", position);
+            fragment.setArguments(args);
+
+            // Set the listener
+            fragment.setDeleteContactListener(this);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, fragment, "DeleteContactFragment")
+                    .addToBackStack(null)
+                    .commit();
+
+            findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onContactDeleted(int position) {
-        DeleteContactFragment fragment = new DeleteContactFragment(contactList, position);
-        // Pass the index of the item to the fragment
-        Bundle args = new Bundle();
-        args.putInt("position", position);
-        fragment.setArguments(args);
+        // Remove the contact from the list
+        contactList.remove(position);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .addToBackStack(null)
-                .commit();
+        // Notify the adapter of the data change
+        adapter.notifyItemRemoved(position);
 
-        findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+        findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
+
+    public void onContactDeleteCanceled() {
+        findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+    }
+
 
 
     @Override
@@ -80,31 +116,6 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 
-    private List<Chat> generateChats() {
-        List<User> users1 = new ArrayList<>();
-        List<User> users2 = new ArrayList<>();
-        users1.add(new User("Uri", "Qqwwee11", "Uri", null));
-        users1.add(new User("Roni", "Qqwwee11", "Roni", null));
-        users2.add(new User("Aba", "Qqwwee11", "Aba", null));
-        users2.add(new User("Ima", "Qqwwee11", "Ima", null));
-
-        List<Message> msgs1 = new ArrayList<>();
-        List<Message> msgs2 = new ArrayList<>();
-
-        msgs1.add(new Message(users1.get(0), "00:00:00", "Hey!"));
-        msgs1.add(new Message(users1.get(1), "00:00:00", "sup?"));
-
-        msgs2.add(new Message(users2.get(0), "00:01:00", "Heyyyy!"));
-        msgs1.add(new Message(users2.get(1), "00:01:00", "sup?"));
-
-        List<Chat> chats = new ArrayList<>();
-
-        // Add sample contacts with messages
-        chats.add(new Chat((ArrayList<User>) users1, (ArrayList<Message>)msgs1));
-        chats.add(new Chat((ArrayList<User>) users2, (ArrayList<Message>)msgs2));
-
-        return chats;
-    }
 
     public void onChatsAdded(List<Chat> chats) {
         // Add the new chat to the contactList

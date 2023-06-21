@@ -8,25 +8,18 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.List;
 
 public class DeleteContactFragment extends Fragment {
 
-    private List<Chat> contactList;
     private int contactIndex;
     private DeleteContactListener deleteContactListener;
 
-    public DeleteContactFragment(List<Chat> contactList, int contactIndex) {
-        this.contactList = contactList;
+    public DeleteContactFragment(int contactIndex) {
         this.contactIndex = contactIndex;
     }
 
     public void setDeleteContactListener(DeleteContactListener listener) {
         deleteContactListener = listener;
-    }
-
-    public interface DeleteContactListener {
-        void onContactDeleted(int contactIndex);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,25 +29,40 @@ public class DeleteContactFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteContact();
+                confirmDeleteContact();
+            }
+        });
+
+        Button cancelButton = rootView.findViewById(R.id.leftButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelDeleteContact();
             }
         });
 
         return rootView;
     }
 
-    private void deleteContact() {
-        if (contactIndex >= 0 && contactIndex < contactList.size()) {
-            contactList.remove(contactIndex);
-
-            if (deleteContactListener != null) {
-                deleteContactListener.onContactDeleted(contactIndex);
-            }
-
-            getParentFragmentManager().popBackStack();
+    private void confirmDeleteContact() {
+        if (deleteContactListener != null) {
+            deleteContactListener.onContactDeleted(contactIndex);
         }
+
+        getParentFragmentManager().popBackStack();
     }
+
+    private void cancelDeleteContact() {
+        if (deleteContactListener != null) {
+            deleteContactListener.onContactDeleteCanceled();
+        }
+
+        getParentFragmentManager().popBackStack();
+    }
+
 }
+
+
 
 
 
