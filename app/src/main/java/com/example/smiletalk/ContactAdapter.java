@@ -1,6 +1,7 @@
 package com.example.smiletalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -17,11 +18,13 @@ import com.example.smiletalk.User;
 
 import java.util.List;
 
+
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
     private List<Chat> contactList;
     private User curUser;
     private Context context;
+
 
     private DeleteContactListener deleteContactListener;
 
@@ -49,6 +52,34 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 break;
             }
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the clicked contact
+                int clickedPosition = holder.getAdapterPosition();
+                Chat clickedContact = contactList.get(clickedPosition);
+
+                // Find the other user's username
+                User otherUser = null;
+                for (User user : clickedContact.getUsers()) {
+                    if (!user.getUsername().equals(curUser.getUsername())) {
+                        otherUser = user;
+                        break;
+                    }
+                }
+
+                // Create an intent to start the ChatActivity
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("curUser", curUser.getUsername());
+                intent.putExtra("contactName", otherUser.getUsername());
+                intent.putExtra("contactPic", otherUser.getProfilePic());
+                intent.putExtra("position", clickedPosition);
+                context.startActivity(intent);
+            }
+        });
+
+
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -96,6 +127,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             timestampTextView = itemView.findViewById(R.id.timestampTextView);
         }
     }
+
+
+
 
     private Bitmap decodeBase64(String base64String) {
         if (base64String != null && isValidBase64(base64String)) {
