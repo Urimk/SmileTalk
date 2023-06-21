@@ -3,20 +3,15 @@ package com.example.smiletalk;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+
 import android.os.Bundle;
-import android.util.Base64;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
+
 
 public class Login extends AppCompatActivity {
     private Server server;
@@ -35,26 +30,31 @@ public class Login extends AppCompatActivity {
                     EditText passwordLable = findViewById(R.id.password);
                     String password = passwordLable.getText().toString();
                     User user = new User(username, password);
-                    server.loginUser(user, this).thenAccept(res -> {
-                        if (res) {
-                            // Handle the true value
-                            server.getUser(user, this).thenAccept(result -> {
-                                if (result) {
-                                    //go to login screen
-                                    Intent intent = new Intent(this, ContactsActivity.class);
-                                    intent.putExtra("user", user);
-                                    try {
-                                        startActivity(intent);
-                                    } catch (Exception e) {
-                                        System.out.println(e);
+                    try {
+                        server.loginUser(user, this).thenAccept(res -> {
+                            if (res) {
+                                // Handle the true value
+                                server.getUser(user, this).thenAccept(result -> {
+                                    if (result) {
+                                        //go to login screen
+                                        Intent intent = new Intent(this, ContactsActivity.class);
+                                        intent.putExtra("user", user);
+                                        try {
+                                            startActivity(intent);
+                                        } catch (Exception e) {
+                                            System.out.println(e);
+                                        }
                                     }
-                                } else {
-                                    usernameLable.setError("Incorrect userName or password");
-                                }
-                            });
-                        }
+                                });
+                            }else{
+                                usernameLable.setError("Incorrect userName or password");
+                            }
 
-                    });
+                        });
+                    }catch (Exception e){
+                        System.out.println(e);
+                    }
+
                 });
 
 
