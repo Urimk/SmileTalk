@@ -9,4 +9,3 @@ public abstract class AppDB extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract ChatDao chatDao();
 }
-

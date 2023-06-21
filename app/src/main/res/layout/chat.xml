@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -22,9 +22,9 @@
                 android:id="@+id/avatarImageView"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
-                android:src="@mipmap/ic_default_avatar_round"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp" />
+                android:src="@mipmap/ic_default_avatar_round" />
 
 
             <RelativeLayout
@@ -34,15 +34,15 @@
 
                 <TextView
                     android:id="@+id/nameTextView"
-                    android:text="Man"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/poppins_bold"
+                    android:maxLines="1"
                     android:paddingTop="17dp"
                     android:paddingBottom="2dp"
-                    android:maxLines="1" />
+                    android:text="Man"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/actionButton"
@@ -60,289 +60,56 @@
             </RelativeLayout>
 
         </LinearLayout>
+
         <View
             android:id="@+id/messagesTopSeparator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:background="@color/gray" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@id/messagesTopSeparator"
-            android:layout_above="@id/messagesBottomSeparator"
-            android:layout_weight="10">
+            android:layout_above="@+id/messagesBottomSeparator"
+            android:layout_below="@+id/messagesTopSeparator"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/scrollViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_sent_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Bye"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="-4dp"
-                    android:layout_marginRight="8dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/ic_message_rec_background"
-                    android:fontFamily="@font/poppins_regular"
-                    android:paddingStart="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Hello"
-                    android:textColor="@android:color/white" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="-4dp"
-                    android:alpha="0.4"
-                    android:backgroundTint="@color/gray"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="32/32/32 19:19:19"
-                    android:textSize="10sp" />
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="-----     The beginning of the chat     -----"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
         </ScrollView>
 
+
         <View
             android:id="@+id/messagesBottomSeparator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
         <LinearLayout
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal">
 
             <EditText

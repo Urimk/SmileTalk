@@ -16,4 +16,3 @@ public interface UserAPI {
     @POST("Users")
     Call<User> createUser(@Body User user);
 }
-
