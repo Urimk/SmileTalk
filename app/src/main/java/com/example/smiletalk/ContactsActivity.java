@@ -128,4 +128,3 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 }
-

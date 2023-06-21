@@ -1,24 +1,44 @@
 package com.example.smiletalk;
 
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity implements DeleteContactListener {
 
     private ImageView avatarImageView;
     private TextView nameTextView;
     private Button deleteChatButton;
+    private EditText messageEditText;
+    private ImageButton submitButton;
+    private RecyclerView messageRecyclerView;
+    private MessageAdapter messageAdapter;
+    private List<Message> messageList;
+
+    private User curUser;
+
 
 
 
@@ -32,17 +52,26 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
         // is loaded from the db/server maybe! !!!
         String contactName = getIntent().getStringExtra("contactName");
         String pic = getIntent().getStringExtra("contactPic");
+        String curUsername = getIntent().getStringExtra("curUser");
+        //find real later...
+        curUser = new User(curUsername, "111", "Me", null);
+
 
         // Initialize views
         avatarImageView = findViewById(R.id.avatarImageView);
         nameTextView = findViewById(R.id.nameTextView);
         deleteChatButton = findViewById(R.id.actionButton);
+        messageEditText = findViewById(R.id.messageEditText);
+        submitButton = findViewById(R.id.submitButton);
+        messageRecyclerView = findViewById(R.id.messageRecyclerView);
+        messageList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(messageList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        messageRecyclerView.setLayoutManager(layoutManager);
+        messageRecyclerView.setAdapter(messageAdapter);
 
         // Set contact name
         nameTextView.setText(contactName);
-        addMessageToScrollView("Hey", "14:53");
-
-
 
 
         Bitmap bitmap = decodeBase64(pic);
@@ -60,25 +89,39 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
                 showDeleteContactDialog(position);
             }
         });
+
+        // Set submit button click listener
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Message message = new Message(curUser, getCurrentTimestamp(), messageEditText.getText().toString().trim());
+                if (message != null) {
+                    addMessageToScrollView(message);
+                    messageEditText.getText().clear();
+                }
+            }
+        });
+
     }
 
-    private void addMessageToScrollView(String message, String timestamp) {
-        LinearLayout scrollViewLayout = findViewById(R.id.scrollViewLayout);
-
-        // Inflate the message layout
-        View messageView = getLayoutInflater().inflate(R.layout.message_rec, null);
-
-        // Set the message content
-        TextView messageTextView = messageView.findViewById(R.id.messageTextView);
-        messageTextView.setText(message);
-
-        // Set the message timestamp
-        TextView timestampTextView = messageView.findViewById(R.id.timestampTextView);
-        timestampTextView.setText(timestamp);
-
-        // Add the message view to the ScrollView
-        scrollViewLayout.addView(messageView);
+    private String getCurrentTimestamp() {
+        // Get the current system time and format it as desired
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(new Date());
     }
+
+    private void addMessageToScrollView(Message message) {
+        if (messageList.isEmpty()) {
+            Message introMessage = new Message(null, null, "-----     The beginning of the chat     -----");
+            messageList.add(introMessage);
+        }
+
+        messageList.add(message);
+        messageAdapter.addMessage(message);
+        messageRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
 
     private boolean isValidBase64(String base64String) {
         if (base64String.length() % 4 != 0) {
