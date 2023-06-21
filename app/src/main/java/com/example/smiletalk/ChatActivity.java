@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,7 +37,6 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     private RecyclerView messageRecyclerView;
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
-
     private User curUser;
 
 

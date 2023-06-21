@@ -19,6 +19,34 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
+    public List<Chat> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(List<Chat> contactList) {
+        this.contactList = contactList;
+    }
+
+    public void setCurUser(User curUser) {
+        this.curUser = curUser;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public DeleteContactListener getDeleteContactListener() {
+        return deleteContactListener;
+    }
+
+    public void setDeleteContactListener(DeleteContactListener deleteContactListener) {
+        this.deleteContactListener = deleteContactListener;
+    }
+
     private List<Chat> contactList;
     private User curUser;
     private Context context;
