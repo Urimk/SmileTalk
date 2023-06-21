@@ -13,7 +13,7 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     List<User> index();
 
-    @Query("SELECT * FROM users WHERE username = :username")
+    @Query("SELECT * FROM users WHERE userName = :username")
     User get(String username);
 
     @Insert

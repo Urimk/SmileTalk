@@ -47,11 +47,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Chat chat = contactList.get(holder.getAdapterPosition());
         User otherUser = null;
         for (User user : chat.getUsers()) {
-            if (!user.getUsername().equals(getCurUser().getUsername())) {
+            if (!user.getUserName().equals(getCurUser().getUserName())) {
                 otherUser = user;
                 break;
             }
         }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

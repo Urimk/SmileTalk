@@ -26,23 +26,26 @@
         android:gravity="center"/>
 
     <EditText
+        android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/username"
         android:layout_below="@id/signIn"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#30ffffff"
         android:hint="Username"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
         android:padding="20dp"
-        />
+        android:drawableLeft="@drawable/person"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/username"
+        android:layout_below="@id/userName"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -53,6 +56,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:drawableLeft="@drawable/security"
+        android:inputType="textPassword"
         />
 
     <EditText
@@ -70,6 +74,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:drawableLeft="@drawable/verification"
+        android:inputType="textPassword"
         />
 
     <EditText
@@ -86,6 +91,7 @@
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
+        android:drawableLeft="@drawable/face"
         />
 
     <!-- ImageView to display the chosen picture -->
@@ -97,6 +103,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="139dp"
+        android:src="@drawable/smiletalklogo"
         />
 
 
@@ -112,7 +119,8 @@
         android:background="#30ffffff"
         android:textSize="20sp"
         android:layout_marginTop="16dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        />
 
     <!-- Button for adding Profile Picture -->
     <Button
@@ -152,7 +160,4 @@
         android:textSize="16sp"
         android:layout_marginTop="16dp"
         android:clickable="true" />
-
-
-
 </RelativeLayout>
