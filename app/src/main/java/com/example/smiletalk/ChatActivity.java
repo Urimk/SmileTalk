@@ -37,6 +37,8 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     private RecyclerView messageRecyclerView;
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
+
+    //may not be needed
     private User curUser;
 
 
