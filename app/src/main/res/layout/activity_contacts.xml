@@ -21,9 +21,20 @@
             android:text="Messages"
             android:textColor="@color/gray"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/settingsIcon"
+            app:layout_constraintHorizontal_bias="0.565"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/settingsIcon"
+            android:layout_width="41dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="8dp"
+            android:src="@mipmap/settings"
+            app:layout_constraintBottom_toBottomOf="@id/messagesTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/messagesTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvContacts"
