@@ -14,12 +14,38 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.smiletalk.User;
-
 import java.util.List;
 
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
+
+    public List<Chat> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(List<Chat> contactList) {
+        this.contactList = contactList;
+    }
+
+    public void setCurUser(User curUser) {
+        this.curUser = curUser;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public DeleteContactListener getDeleteContactListener() {
+        return deleteContactListener;
+    }
+
+    public void setDeleteContactListener(DeleteContactListener deleteContactListener) {
+        this.deleteContactListener = deleteContactListener;
+    }
 
     private List<Chat> contactList;
     private User curUser;
@@ -61,10 +87,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 int clickedPosition = holder.getAdapterPosition();
                 Chat clickedContact = contactList.get(clickedPosition);
 
-                // Find the other user's username
+                // Find the other user's userName
                 User otherUser = null;
                 for (User user : clickedContact.getUsers()) {
-                    if (!user.getUsername().equals(curUser.getUsername())) {
+                    if (!user.getUserName().equals(curUser.getUserName())) {
                         otherUser = user;
                         break;
                     }
@@ -72,8 +98,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 // Create an intent to start the ChatActivity
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("curUser", curUser.getUsername());
-                intent.putExtra("contactName", otherUser.getUsername());
+                intent.putExtra("curUser", curUser.getUserName());
+                intent.putExtra("contactName", otherUser.getUserName());
                 intent.putExtra("contactPic", otherUser.getProfilePic());
                 intent.putExtra("position", clickedPosition);
                 context.startActivity(intent);
@@ -94,7 +120,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             }
         });
 
-        holder.nameTextView.setText(otherUser.getUsername());
+        holder.nameTextView.setText(otherUser.getUserName());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
         if (bitmap != null) {
             holder.avatarImageView.setImageBitmap(bitmap);

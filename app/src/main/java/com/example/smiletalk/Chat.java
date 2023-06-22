@@ -4,11 +4,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "chats")
-public class Chat implements Serializable {
+public class Chat {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @TypeConverters(UserListConverter.class)

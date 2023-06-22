@@ -2,9 +2,12 @@ package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,50 +21,52 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;
-    private List<Chat> contactList;
-
+    private ViewModelChat viewModel;
+    public static Context context;
     private User curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-
+        context = getApplicationContext();
+        Intent intent = getIntent();
+        viewModel =  new ViewModelProvider(this).get(ViewModelChat.class);
         // Initialize RecyclerView
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         // Prepare data
-        contactList = new ArrayList<Chat>();
-        curUser = new User("Uri", "Qqwwee11", "Uri", "1");
+        curUser = getIntent().getParcelableExtra("user");
 
         // Set up the adapter
-        adapter = new ContactAdapter(contactList, curUser, this);
+        adapter = new ContactAdapter(viewModel.get().getValue(), curUser, this);
         rvContacts.setAdapter(adapter);
+
+        viewModel.get().observe(this, chats -> {
+             adapter.setContactList(chats);
+             });
 
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check if the AddContactFragment is already added
-                Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
-                Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+        fab.setOnClickListener(view -> {
+            // Check if the AddContactFragment is already added
+            Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
+            Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
 
-                if (addContactFragment == null && deleteContactFragment == null) {
-                    // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding AddContactFragment
-                    AddContactFragment fragment = new AddContactFragment();
-                    fragment.setAddContactListener(ContactsActivity.this);
+            if (addContactFragment == null && deleteContactFragment == null) {
+                // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding AddContactFragment
+                AddContactFragment fragment = new AddContactFragment();
+                fragment.setAddContactListener(ContactsActivity.this);
 
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .add(android.R.id.content, fragment, "AddContactFragment")
-                            .addToBackStack(null)
-                            .commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment, "AddContactFragment")
+                        .addToBackStack(null)
+                        .commit();
 
-                    findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
-                }
+                findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
             }
         });
 
@@ -128,4 +133,3 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 }
-

@@ -1,11 +1,13 @@
 package com.example.smiletalk;
 
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
 
+    //may not be needed
     private User curUser;
 
 
