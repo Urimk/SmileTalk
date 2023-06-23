@@ -16,6 +16,9 @@ public interface ChatDao {
     @Query("SELECT * FROM chats WHERE id = :id")
     Chat get(int id);
 
+    @Query("SELECT * FROM chats WHERE :username IN (SELECT userName FROM users)")
+    List<Chat> getChatsWithUser(String username);
+
     @Insert
     void insert(Chat... chats);
 

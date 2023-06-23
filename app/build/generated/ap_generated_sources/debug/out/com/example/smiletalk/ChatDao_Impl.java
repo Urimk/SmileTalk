@@ -5,6 +5,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -25,6 +26,8 @@ public final class ChatDao_Impl implements ChatDao {
   private final EntityDeletionOrUpdateAdapter<Chat> __deletionAdapterOfChat;
 
   private final EntityDeletionOrUpdateAdapter<Chat> __updateAdapterOfChat;
+
+  private final SharedSQLiteStatement __preparedStmtOfClear;
 
   public ChatDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -86,6 +89,13 @@ public final class ChatDao_Impl implements ChatDao {
         stmt.bindLong(4, value.getId());
       }
     };
+    this.__preparedStmtOfClear = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM chats";
+        return _query;
+      }
+    };
   }
 
   @Override
@@ -121,6 +131,20 @@ public final class ChatDao_Impl implements ChatDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void clear() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfClear.acquire();
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfClear.release(_stmt);
     }
   }
 
@@ -202,6 +226,54 @@ public final class ChatDao_Impl implements ChatDao {
         _result.setId(_tmpId);
       } else {
         _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<Chat> getChatsWithUser(final String username) {
+    final String _sql = "SELECT * FROM chats WHERE ? IN (SELECT userName FROM users)";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (username == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, username);
+    }
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfUsers = CursorUtil.getColumnIndexOrThrow(_cursor, "users");
+      final int _cursorIndexOfMessages = CursorUtil.getColumnIndexOrThrow(_cursor, "messages");
+      final List<Chat> _result = new ArrayList<Chat>(_cursor.getCount());
+      while(_cursor.moveToNext()) {
+        final Chat _item;
+        final ArrayList<User> _tmpUsers;
+        final String _tmp;
+        if (_cursor.isNull(_cursorIndexOfUsers)) {
+          _tmp = null;
+        } else {
+          _tmp = _cursor.getString(_cursorIndexOfUsers);
+        }
+        _tmpUsers = UserListConverter.fromString(_tmp);
+        final ArrayList<Message> _tmpMessages;
+        final String _tmp_1;
+        if (_cursor.isNull(_cursorIndexOfMessages)) {
+          _tmp_1 = null;
+        } else {
+          _tmp_1 = _cursor.getString(_cursorIndexOfMessages);
+        }
+        _tmpMessages = MessageListConverter.fromString(_tmp_1);
+        _item = new Chat(_tmpUsers,_tmpMessages);
+        final int _tmpId;
+        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        _result.add(_item);
       }
       return _result;
     } finally {
