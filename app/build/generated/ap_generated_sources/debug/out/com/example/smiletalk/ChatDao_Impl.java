@@ -5,6 +5,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -26,64 +27,83 @@ public final class ChatDao_Impl implements ChatDao {
 
   private final EntityDeletionOrUpdateAdapter<Chat> __updateAdapterOfChat;
 
+  private final SharedSQLiteStatement __preparedStmtOfClear;
+
   public ChatDao_Impl(RoomDatabase __db) {
     this.__db = __db;
     this.__insertionAdapterOfChat = new EntityInsertionAdapter<Chat>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `chats` (`id`,`users`,`messages`) VALUES (nullif(?, 0),?,?)";
+        return "INSERT OR ABORT INTO `chats` (`primery`,`id`,`users`,`messages`) VALUES (nullif(?, 0),?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
-        final String _tmp = UserListConverter.fromArrayList(value.getUsers());
-        if (_tmp == null) {
+        stmt.bindLong(1, value.getPrimery());
+        if (value.getId() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, _tmp);
+          stmt.bindString(2, value.getId());
+        }
+        final String _tmp = UserListConverter.fromArrayList(value.getUsers());
+        if (_tmp == null) {
+          stmt.bindNull(3);
+        } else {
+          stmt.bindString(3, _tmp);
         }
         final String _tmp_1 = MessageListConverter.fromArrayList(value.getMessages());
         if (_tmp_1 == null) {
-          stmt.bindNull(3);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(3, _tmp_1);
+          stmt.bindString(4, _tmp_1);
         }
       }
     };
     this.__deletionAdapterOfChat = new EntityDeletionOrUpdateAdapter<Chat>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `chats` WHERE `id` = ?";
+        return "DELETE FROM `chats` WHERE `primery` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
+        stmt.bindLong(1, value.getPrimery());
       }
     };
     this.__updateAdapterOfChat = new EntityDeletionOrUpdateAdapter<Chat>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `chats` SET `id` = ?,`users` = ?,`messages` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `chats` SET `primery` = ?,`id` = ?,`users` = ?,`messages` = ? WHERE `primery` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
-        final String _tmp = UserListConverter.fromArrayList(value.getUsers());
-        if (_tmp == null) {
+        stmt.bindLong(1, value.getPrimery());
+        if (value.getId() == null) {
           stmt.bindNull(2);
         } else {
-          stmt.bindString(2, _tmp);
+          stmt.bindString(2, value.getId());
+        }
+        final String _tmp = UserListConverter.fromArrayList(value.getUsers());
+        if (_tmp == null) {
+          stmt.bindNull(3);
+        } else {
+          stmt.bindString(3, _tmp);
         }
         final String _tmp_1 = MessageListConverter.fromArrayList(value.getMessages());
         if (_tmp_1 == null) {
-          stmt.bindNull(3);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(3, _tmp_1);
+          stmt.bindString(4, _tmp_1);
         }
-        stmt.bindLong(4, value.getId());
+        stmt.bindLong(5, value.getPrimery());
+      }
+    };
+    this.__preparedStmtOfClear = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM chats";
+        return _query;
       }
     };
   }
@@ -125,12 +145,27 @@ public final class ChatDao_Impl implements ChatDao {
   }
 
   @Override
+  public void clear() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfClear.acquire();
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfClear.release(_stmt);
+    }
+  }
+
+  @Override
   public List<Chat> index() {
     final String _sql = "SELECT * FROM chats";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
+      final int _cursorIndexOfPrimery = CursorUtil.getColumnIndexOrThrow(_cursor, "primery");
       final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
       final int _cursorIndexOfUsers = CursorUtil.getColumnIndexOrThrow(_cursor, "users");
       final int _cursorIndexOfMessages = CursorUtil.getColumnIndexOrThrow(_cursor, "messages");
@@ -154,8 +189,15 @@ public final class ChatDao_Impl implements ChatDao {
         }
         _tmpMessages = MessageListConverter.fromString(_tmp_1);
         _item = new Chat(_tmpUsers,_tmpMessages);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final int _tmpPrimery;
+        _tmpPrimery = _cursor.getInt(_cursorIndexOfPrimery);
+        _item.setPrimery(_tmpPrimery);
+        final String _tmpId;
+        if (_cursor.isNull(_cursorIndexOfId)) {
+          _tmpId = null;
+        } else {
+          _tmpId = _cursor.getString(_cursorIndexOfId);
+        }
         _item.setId(_tmpId);
         _result.add(_item);
       }
@@ -175,6 +217,7 @@ public final class ChatDao_Impl implements ChatDao {
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
+      final int _cursorIndexOfPrimery = CursorUtil.getColumnIndexOrThrow(_cursor, "primery");
       final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
       final int _cursorIndexOfUsers = CursorUtil.getColumnIndexOrThrow(_cursor, "users");
       final int _cursorIndexOfMessages = CursorUtil.getColumnIndexOrThrow(_cursor, "messages");
@@ -197,8 +240,15 @@ public final class ChatDao_Impl implements ChatDao {
         }
         _tmpMessages = MessageListConverter.fromString(_tmp_1);
         _result = new Chat(_tmpUsers,_tmpMessages);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final int _tmpPrimery;
+        _tmpPrimery = _cursor.getInt(_cursorIndexOfPrimery);
+        _result.setPrimery(_tmpPrimery);
+        final String _tmpId;
+        if (_cursor.isNull(_cursorIndexOfId)) {
+          _tmpId = null;
+        } else {
+          _tmpId = _cursor.getString(_cursorIndexOfId);
+        }
         _result.setId(_tmpId);
       } else {
         _result = null;

@@ -40,9 +40,9 @@ public final class AppDB_Impl extends AppDB {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userName` TEXT, `password` TEXT, `displayName` TEXT, `profilePic` TEXT, `token` TEXT)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `chats` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `users` TEXT, `messages` TEXT)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `chats` (`primery` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `users` TEXT, `messages` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f8c6c7f0978b3efeb6a8533179350ee')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '43a20ed3846bea6a123233a922ebdaf2')");
       }
 
       @Override
@@ -103,8 +103,9 @@ public final class AppDB_Impl extends AppDB {
                   + " Expected:\n" + _infoUsers + "\n"
                   + " Found:\n" + _existingUsers);
         }
-        final HashMap<String, TableInfo.Column> _columnsChats = new HashMap<String, TableInfo.Column>(3);
-        _columnsChats.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashMap<String, TableInfo.Column> _columnsChats = new HashMap<String, TableInfo.Column>(4);
+        _columnsChats.put("primery", new TableInfo.Column("primery", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsChats.put("id", new TableInfo.Column("id", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsChats.put("users", new TableInfo.Column("users", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsChats.put("messages", new TableInfo.Column("messages", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysChats = new HashSet<TableInfo.ForeignKey>(0);
@@ -118,7 +119,7 @@ public final class AppDB_Impl extends AppDB {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "1f8c6c7f0978b3efeb6a8533179350ee", "7552afffcbb60a19031ae24461e9666e");
+    }, "43a20ed3846bea6a123233a922ebdaf2", "4c3a4d2639ee7ce4f68831454ad2b68e");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
