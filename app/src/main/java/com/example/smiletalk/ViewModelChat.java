@@ -21,12 +21,16 @@ public class ViewModelChat extends ViewModel {
         return chats;
     }
 
-    public void add(String token, User other) {
-        repository.add(token, other);
+    public boolean add(String token, User other) {
+       return repository.add(token, other);
     }
 
-    public void delete(int chatId) {
-        repository.delete(chatId);
+    public boolean delete(String chatId) {
+     return repository.delete(chatId);
+    }
+
+    public boolean sendMassage(String token, Message msg, String chatID) {
+        return repository.sendMassge(token, msg,chatID);
     }
 
     public void reload(String token) {

@@ -8,8 +8,17 @@ import java.util.ArrayList;
 
 @Entity(tableName = "chats")
 public class Chat {
+    public int getPrimery() {
+        return primery;
+    }
+
+    public void setPrimery(int primery) {
+        this.primery = primery;
+    }
+
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int primery;
+    private String id;
     @TypeConverters(UserListConverter.class)
     private ArrayList<User> users;
 
@@ -21,11 +30,11 @@ public class Chat {
         this.messages = messages;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

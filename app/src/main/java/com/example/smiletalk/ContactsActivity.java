@@ -2,6 +2,7 @@ package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,10 +10,12 @@ import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.usb.UsbRequest;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.List;
@@ -25,6 +28,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
     private ViewModelChat viewModel;
     public static Context context;
     private User curUser;
+    private List<Chat> contactList;
 
     private List<Chat> contactList;
 
@@ -52,6 +56,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         // Initialize RecyclerView
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
 
 
 
@@ -130,6 +135,13 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         // Prepare data
         //curUser = getIntent().getParcelableExtra("user");
 
+        contactList = new ArrayList<Chat>();
+
+        // Set up the adapter
+        adapter = new ContactAdapter(contactList, curUser, this);
+        rvContacts.setAdapter(adapter);
+
+
         new Thread(() -> {
             contactList = appDB.chatDao().getChatsWithUser(curUser.getUserName());
             runOnUiThread(() -> {
@@ -139,11 +151,24 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
             });
         }).start();
 
-        viewModel.get().observe(this, chats -> {
-            if (adapter != null) {
-                adapter.setContactList(chats);
-            }
-        });
+
+        //tests
+        //create chat with another user
+
+        Intent i = getIntent();
+        curUser = (User) i.getSerializableExtra("user");
+
+        viewModel.reload(curUser.getToken());
+      //  viewModel.sendMassage(curUser.getToken(),new Message(curUser,"now","hey"),"64928ad84332e2b54b26882b");
+      //  viewModel.delete("64928ad84332e2b54b26882b");
+      //  viewModel.add(curUser.getToken(),c);
+
+   //     viewModel.get().observe(this, chats -> {
+     //        adapter.setContactList(chats);
+       //      adapter.notifyDataSetChanged();
+        //     });
+
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -233,3 +258,4 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 }
+
