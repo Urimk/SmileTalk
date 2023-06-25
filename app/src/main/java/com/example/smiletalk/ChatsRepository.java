@@ -36,9 +36,10 @@ public class ChatsRepository {
         return api.createChat(token,other);
     }
 
-    public boolean delete(String token,String chatId) {
+    public boolean delete(String token,Chat rem) {
         AtomicBoolean res = new AtomicBoolean(false);
-        api.deleteChat(token,chatId).thenAccept(result->{
+        this.chatListData.deleteChat(rem);
+        api.deleteChat(token,rem.getId()).thenAccept(result->{
             if(result)
                 res.set(true);
         });

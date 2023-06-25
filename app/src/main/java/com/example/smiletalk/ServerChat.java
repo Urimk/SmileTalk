@@ -72,13 +72,14 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.isSuccessful()) {
-                    new Thread(() -> {
                         future.complete(true);
                         assert response.body() != null;
                         Chat newChat = response.body();
                         List<Chat> currentChats = chatListData.getValue();
                         currentChats.add(newChat);
                         chatListData.postValue(currentChats);
+                    new Thread(() -> {
+                        dao.insert(newChat);
                     }).start();
                 } else {
                     future.complete(false);
@@ -102,13 +103,7 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.code() == 204) {
-                    new Thread(() -> {
                         future.complete(true);
-                        assert response.body() != null;
-                        Chat delChat = response.body();
-                        dao.delete(delChat);
-                        chatListData.postValue(dao.index());
-                    }).start();
                 } else {
                     future.complete(false);
                 }

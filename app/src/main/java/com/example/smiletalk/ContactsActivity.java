@@ -129,8 +129,8 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         //contactList.remove(position);
 
         // Notify the adapter of the data change
-        String chatID = viewModel.get().getValue().get(position).getId();
-        viewModel.delete(curUser.getToken(),chatID);
+        Chat reChat = viewModel.get().getValue().get(position);
+        viewModel.delete(curUser.getToken(),reChat);
         adapter.notifyItemRemoved(position);
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }

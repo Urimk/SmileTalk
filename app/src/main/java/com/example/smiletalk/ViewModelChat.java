@@ -24,8 +24,8 @@ public class ViewModelChat extends ViewModel implements Serializable {
         return repository.add(token, other);
     }
 
-    public void delete(String token,String chatId) {
-        repository.delete(token,chatId);
+    public void delete(String token,Chat rem) {
+        repository.delete(token,rem);
     }
 
     public void reload(String token) {
