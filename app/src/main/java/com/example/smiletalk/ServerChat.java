@@ -72,16 +72,18 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.isSuccessful()) {
+                    new Thread(() -> {
                         future.complete(true);
                         assert response.body() != null;
                         Chat newChat = response.body();
                         List<Chat> currentChats = chatListData.getValue();
                         currentChats.add(newChat);
                         chatListData.postValue(currentChats);
-                    new Thread(() -> {
+
                         dao.insert(newChat);
                     }).start();
                 } else {
+                    Toast.makeText(ContactsActivity.context, "could not create the chat", Toast.LENGTH_SHORT).show();
                     future.complete(false);
                 }
             }
