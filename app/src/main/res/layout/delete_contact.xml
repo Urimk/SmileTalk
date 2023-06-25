@@ -52,7 +52,7 @@
                 android:backgroundTint="?attr/background"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Cancel"
-                android:textColor="@color/black" />
+                android:textColor="?attr/normalTxt" />
 
             <Button
                 android:id="@+id/rightButton"
@@ -62,7 +62,7 @@
                 android:layout_toRightOf="@id/leftButton"
                 android:layout_alignTop="@id/leftButton"
                 android:layout_alignBottom="@id/leftButton"
-                android:backgroundTint="?attr/attentionColor"
+                android:backgroundTint="?attr/attention"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Delete" />
 

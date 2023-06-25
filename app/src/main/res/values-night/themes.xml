@@ -1,10 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base.Theme.SmileTalk.Night" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/dm_light_blue</item>
+    <style name="DarkTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="primary">@color/dm_light_blue</item>
         <item name="bigText">@color/dm_gray</item>
-        <item name="attentionColor">@color/dm_red</item>
-        <item name="backgroundColor">@color/almost_black</item>
+        <item name="attention">@color/dm_red</item>
+        <item name="background">@color/almost_black</item>
+        <item name="normalTxt">@color/white</item>
 
     </style>
 
