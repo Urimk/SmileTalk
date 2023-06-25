@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blockClick"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:text="Are you sure you want to delete this contact?"
-            android:textColor="@color/gray"
+            android:textColor="?attr/bigText"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="40dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="?attr/background"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Cancel"
                 android:textColor="@color/black" />
@@ -61,7 +62,7 @@
                 android:layout_toRightOf="@id/leftButton"
                 android:layout_alignTop="@id/leftButton"
                 android:layout_alignBottom="@id/leftButton"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="?attr/attentionColor"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Delete" />
 

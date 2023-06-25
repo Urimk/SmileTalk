@@ -224,7 +224,10 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
     @Override
     public void onContactDeleted(int position) {
         // Remove the contact from the list
-        //contactList.remove(position);
+        Chat deleteChat = contactList.get(position);
+        new Thread(() -> {
+            appDB.chatDao().delete(deleteChat);
+        }).start();
 
         // Notify the adapter of the data change
         adapter.notifyItemRemoved(position);

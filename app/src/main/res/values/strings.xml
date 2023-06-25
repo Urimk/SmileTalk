@@ -7,4 +7,10 @@
     <string name="login">login</string>
     <string name="Login">Login</string>
     <string name="BaseUrl">http://10.0.2.2:5000/api/</string>
+    <string name="contactActivityTitle">Messages</string>
+    <string name="signInText">Sign In</string>
+    <string name="ppText">Profile Picture</string>
+    <string name="addPp">Add Picture</string>
+    <string name="settings">Settings</string>
+
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bigText" format="reference" />
+    <attr name="colorPrimary" format="reference" />
+    <attr name="attentionColor" format="reference"/>
+    <attr name="backgroundColor" format="reference"/>
+</resources>

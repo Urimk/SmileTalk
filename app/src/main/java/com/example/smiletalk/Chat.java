@@ -6,6 +6,7 @@ import androidx.room.TypeConverters;
 
 import java.util.ArrayList;
 
+
 @Entity(tableName = "chats")
 public class Chat {
     public int getPrimery() {

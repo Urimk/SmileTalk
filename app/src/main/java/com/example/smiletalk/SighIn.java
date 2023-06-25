@@ -195,6 +195,18 @@ public class SighIn extends AppCompatActivity {
             }
         );
 
+        TextView settings = findViewById(R.id.settingsTextView);
+        registered.setOnClickListener(View -> {
+                    // Define the action to start the login activity here
+                    Intent intent = new Intent(this, Login.class);
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e){
+                    }
+
+                }
+        );
+
 
     }
 

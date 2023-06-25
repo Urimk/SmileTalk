@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -33,11 +35,22 @@ public class AddContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.add_contact, container, false);
 
+
         usernameEditText = rootView.findViewById(R.id.usernameEditText);
 
         Button addButton = rootView.findViewById(R.id.addButton);
 
         appDB = AppDB.getInstance(requireContext());
+
+        RelativeLayout overlay = rootView.findViewById(R.id.blockClick);
+
+        overlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Consume the touch event to prevent it from reaching the underlying views
+            }
+        });
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -100,9 +100,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 // Create an intent to start the ChatActivity
                 Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("chatId", clickedContact.getId());
                 intent.putExtra("curUser", curUser.getUserName());
-                intent.putExtra("contactName", otherUser.getUserName());
-                intent.putExtra("contactPic", otherUser.getProfilePic());
                 intent.putExtra("position", clickedPosition);
                 context.startActivity(intent);
             }

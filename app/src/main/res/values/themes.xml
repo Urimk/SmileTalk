@@ -1,12 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SmileTalk" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="android:windowBackground">@color/white</item>
 
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.SmileTalk" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/light_blue</item>
+        <item name="bigText">@color/gray</item>
+        <item name="attentionColor">@color/red</item>
+        <item name="backgroundColor">@color/white</item>
+
     </style>
 
-
-    <style name="Theme.SmileTalk" parent="Base.Theme.SmileTalk" />
 </resources>

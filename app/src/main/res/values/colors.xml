@@ -10,5 +10,13 @@
     <color name="light_gray">#EEEEEE</color>
     <color name="extra_light_blue">#9ed7ff</color>
     <color name="overlay_gray">#80000000</color>
+    <color name="blue">#30f</color>
+    <color name="another_gray">#30ffffff</color>
+
+    <color name="dm_light_blue">#0274c7</color>
+    <color name="dm_gray">#505050</color>
+    <color name="dm_red">#BF2A28</color>
+    <color name="almost_black">#303030</color>
+
 
 </resources>
