@@ -1,13 +1,13 @@
 package com.example.smiletalk;
 
-import android.os.AsyncTask;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChatsRepository {
     private ChatDao dao;
@@ -15,22 +15,48 @@ public class ChatsRepository {
 
     private ServerDao api;
     public ChatsRepository() {
-        AppDB db = Room.databaseBuilder(ContactsActivity.context, AppDB.class, "AppDB").build();
+        AppDB db = Room.databaseBuilder(ContactsActivity.context, AppDB.class, "AppDB")
+                .fallbackToDestructiveMigration()
+                .build();
         dao = db.chatDao();
         chatListData = new ChatListData();
         api = new ServerDao(chatListData,dao);
     }
 
-    public void add(String token, User other) {
-        api.createChat(token,other);
+
+    public boolean sendMassge(String token, Message msg, String chatID) {
+        AtomicBoolean res = new AtomicBoolean(false);
+        api.sendMessage(token,chatID,msg,ChatActivity.context).thenAccept(result->{
+            if(result)
+                res.set(true);
+        });
+        return res.get();
+    }
+    public CompletableFuture<Boolean> add(String token, User other) {
+        return api.createChat(token,other);
     }
 
-    public void delete(int chatId) {
-        api.deleteChat(chatId);
+    public boolean delete(String token,String chatId) {
+        AtomicBoolean res = new AtomicBoolean(false);
+        api.deleteChat(token,chatId).thenAccept(result->{
+            if(result)
+                res.set(true);
+        });
+        return res.get();
     }
 
     public void reload(String token) {
         api.get(token);
+    }
+
+    public LiveData<List<Chat>> getAll() {
+        return chatListData;
+    }
+
+
+
+    public void getUserChats(String username) {
+        chatListData.postValue(dao.getChatsWithUser(username));
     }
 
     class ChatListData extends MutableLiveData<List<Chat>> {
@@ -39,17 +65,20 @@ public class ChatsRepository {
             setValue(new LinkedList<>());
         }
 
-        @Override
-        protected void onActive() {
-            super.onActive();
-            new Thread(() -> {
-                chatListData.postValue(dao.index());
-            }).start();
+        public void addChat(Chat chat) {
+            List<Chat> currentChats = getValue();
+            currentChats.add(chat);
+            setValue(currentChats);
         }
+
+        public void deleteChat(Chat chat) {
+            List<Chat> currentChats = getValue();
+            currentChats.remove(chat);
+            setValue(currentChats);
+        }
+
     }
 
-    public LiveData<List<Chat>> getAll() {
-        return chatListData;
-    }
+
 
 }

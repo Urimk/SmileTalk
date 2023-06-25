@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,7 +27,7 @@ public class ServerDao {
         this.dao = dao;
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/api/")
+                .baseUrl("http://192.168.43.169:5000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         chat = retrofit.create(ChatAPI.class);
@@ -39,11 +40,19 @@ public class ServerDao {
             public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
                 new Thread(() -> {
                     List<Chat> chats = response.body();
+                    chatListData.postValue(chats);
+                    for (Chat c: chats) {
+                        ArrayList<User> users = c.getUsers();
+                        for (User u: users) {
+                            u.savePathImage();
+                        }
+
+                    }
                     dao.clear();
                     assert chats != null;
-                    for(Chat c : chats)
+                    for(Chat c : chats){
                         dao.insert(c);
-                    chatListData.postValue(dao.index());
+                    }
                 }).start();
             }
 
@@ -67,8 +76,9 @@ public class ServerDao {
                         future.complete(true);
                         assert response.body() != null;
                         Chat newChat = response.body();
-                        dao.insert(newChat);
-                        chatListData.postValue(dao.index());
+                        List<Chat> currentChats = chatListData.getValue();
+                        currentChats.add(newChat);
+                        chatListData.postValue(currentChats);
                     }).start();
                 } else {
                     future.complete(false);
@@ -84,10 +94,10 @@ public class ServerDao {
 
         return future;
     }
-    public CompletableFuture<Boolean> deleteChat(int chatID)  {
+    public CompletableFuture<Boolean> deleteChat(String token,String chatID)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        Call<Chat> call = this.chat.deleteChat(chatID);
+        Call<Chat> call = this.chat.deleteChat(chatID,token);
         call.enqueue(new Callback<Chat>() {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
@@ -114,7 +124,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> getChat(String token, int chatID)  {
+    public CompletableFuture<Boolean> getChat(String token, String chatID)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Chat> call = this.chat.getChat(chatID,token);
@@ -144,7 +154,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> getMessages(String token, int chatID,List<Message> messages,Context chat)  {
+    public CompletableFuture<Boolean> getMessages(String token, String chatID,List<Message> messages,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<List<Message>> call = this.chat.getMessages(chatID,token);
@@ -175,7 +185,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> sendMessage(String token, int chatID,Message msg,Context chat)  {
+    public CompletableFuture<Boolean> sendMessage(String token, String chatID,Message msg,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Message> call = this.chat.postMessege(chatID,msg,token);

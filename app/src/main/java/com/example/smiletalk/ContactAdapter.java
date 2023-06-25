@@ -75,7 +75,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Chat chat = contactList.get(holder.getAdapterPosition());
         User otherUser = null;
         for (User user : chat.getUsers()) {
-            if (!user.getUserName().equals(getCurUser().getUserName())) {
+            if (!user.getUsername().equals(getCurUser().getUsername())) {
                 otherUser = user;
                 break;
             }
@@ -92,7 +92,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 // Find the other user's userName
                 User otherUser = null;
                 for (User user : clickedContact.getUsers()) {
-                    if (!user.getUserName().equals(curUser.getUserName())) {
+                    if (!user.getUsername().equals(curUser.getUsername())) {
                         otherUser = user;
                         break;
                     }
@@ -100,8 +100,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 // Create an intent to start the ChatActivity
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("curUser", curUser.getUserName());
-                intent.putExtra("contactName", otherUser.getUserName());
+                intent.putExtra("curUser", curUser.getUsername());
+                intent.putExtra("contactName", otherUser.getUsername());
                 intent.putExtra("contactPic", otherUser.getProfilePic());
                 intent.putExtra("position", clickedPosition);
                 context.startActivity(intent);
@@ -122,7 +122,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             }
         });
 
-        holder.nameTextView.setText(otherUser.getUserName());
+        holder.nameTextView.setText(otherUser.getUsername());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
         if (bitmap != null) {
             holder.avatarImageView.setImageBitmap(bitmap);

@@ -31,85 +31,91 @@ public final class UserDao_Impl implements UserDao {
     this.__insertionAdapterOfUser = new EntityInsertionAdapter<User>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `users` (`id`,`userName`,`password`,`displayName`,`profilePic`,`token`) VALUES (nullif(?, 0),?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `users` (`username`,`password`,`displayName`,`profilePic`,`token`) VALUES (?,?,?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, User value) {
-        stmt.bindLong(1, value.getId());
-        if (value.getUserName() == null) {
-          stmt.bindNull(2);
+        if (value.getUsername() == null) {
+          stmt.bindNull(1);
         } else {
-          stmt.bindString(2, value.getUserName());
+          stmt.bindString(1, value.getUsername());
         }
         if (value.getPassword() == null) {
-          stmt.bindNull(3);
+          stmt.bindNull(2);
         } else {
-          stmt.bindString(3, value.getPassword());
+          stmt.bindString(2, value.getPassword());
         }
         if (value.getDisplayName() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getDisplayName());
+          stmt.bindString(3, value.getDisplayName());
         }
         if (value.getProfilePic() == null) {
-          stmt.bindNull(5);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(5, value.getProfilePic());
+          stmt.bindString(4, value.getProfilePic());
         }
         if (value.getToken() == null) {
-          stmt.bindNull(6);
+          stmt.bindNull(5);
         } else {
-          stmt.bindString(6, value.getToken());
+          stmt.bindString(5, value.getToken());
         }
       }
     };
     this.__deletionAdapterOfUser = new EntityDeletionOrUpdateAdapter<User>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `users` WHERE `id` = ?";
+        return "DELETE FROM `users` WHERE `username` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, User value) {
-        stmt.bindLong(1, value.getId());
+        if (value.getUsername() == null) {
+          stmt.bindNull(1);
+        } else {
+          stmt.bindString(1, value.getUsername());
+        }
       }
     };
     this.__updateAdapterOfUser = new EntityDeletionOrUpdateAdapter<User>(__db) {
       @Override
       public String createQuery() {
-        return "UPDATE OR ABORT `users` SET `id` = ?,`userName` = ?,`password` = ?,`displayName` = ?,`profilePic` = ?,`token` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `users` SET `username` = ?,`password` = ?,`displayName` = ?,`profilePic` = ?,`token` = ? WHERE `username` = ?";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, User value) {
-        stmt.bindLong(1, value.getId());
-        if (value.getUserName() == null) {
-          stmt.bindNull(2);
+        if (value.getUsername() == null) {
+          stmt.bindNull(1);
         } else {
-          stmt.bindString(2, value.getUserName());
+          stmt.bindString(1, value.getUsername());
         }
         if (value.getPassword() == null) {
-          stmt.bindNull(3);
+          stmt.bindNull(2);
         } else {
-          stmt.bindString(3, value.getPassword());
+          stmt.bindString(2, value.getPassword());
         }
         if (value.getDisplayName() == null) {
-          stmt.bindNull(4);
+          stmt.bindNull(3);
         } else {
-          stmt.bindString(4, value.getDisplayName());
+          stmt.bindString(3, value.getDisplayName());
         }
         if (value.getProfilePic() == null) {
-          stmt.bindNull(5);
+          stmt.bindNull(4);
         } else {
-          stmt.bindString(5, value.getProfilePic());
+          stmt.bindString(4, value.getProfilePic());
         }
         if (value.getToken() == null) {
+          stmt.bindNull(5);
+        } else {
+          stmt.bindString(5, value.getToken());
+        }
+        if (value.getUsername() == null) {
           stmt.bindNull(6);
         } else {
-          stmt.bindString(6, value.getToken());
+          stmt.bindString(6, value.getUsername());
         }
-        stmt.bindLong(7, value.getId());
       }
     };
   }
@@ -157,8 +163,7 @@ public final class UserDao_Impl implements UserDao {
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
-      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-      final int _cursorIndexOfUserName = CursorUtil.getColumnIndexOrThrow(_cursor, "userName");
+      final int _cursorIndexOfUsername = CursorUtil.getColumnIndexOrThrow(_cursor, "username");
       final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "password");
       final int _cursorIndexOfDisplayName = CursorUtil.getColumnIndexOrThrow(_cursor, "displayName");
       final int _cursorIndexOfProfilePic = CursorUtil.getColumnIndexOrThrow(_cursor, "profilePic");
@@ -166,11 +171,11 @@ public final class UserDao_Impl implements UserDao {
       final List<User> _result = new ArrayList<User>(_cursor.getCount());
       while(_cursor.moveToNext()) {
         final User _item;
-        final String _tmpUserName;
-        if (_cursor.isNull(_cursorIndexOfUserName)) {
-          _tmpUserName = null;
+        final String _tmpUsername;
+        if (_cursor.isNull(_cursorIndexOfUsername)) {
+          _tmpUsername = null;
         } else {
-          _tmpUserName = _cursor.getString(_cursorIndexOfUserName);
+          _tmpUsername = _cursor.getString(_cursorIndexOfUsername);
         }
         final String _tmpPassword;
         if (_cursor.isNull(_cursorIndexOfPassword)) {
@@ -190,10 +195,7 @@ public final class UserDao_Impl implements UserDao {
         } else {
           _tmpProfilePic = _cursor.getString(_cursorIndexOfProfilePic);
         }
-        _item = new User(_tmpUserName,_tmpPassword,_tmpDisplayName,_tmpProfilePic);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
-        _item.setId(_tmpId);
+        _item = new User(_tmpUsername,_tmpPassword,_tmpDisplayName,_tmpProfilePic);
         final String _tmpToken;
         if (_cursor.isNull(_cursorIndexOfToken)) {
           _tmpToken = null;
@@ -223,19 +225,18 @@ public final class UserDao_Impl implements UserDao {
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
-      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-      final int _cursorIndexOfUserName = CursorUtil.getColumnIndexOrThrow(_cursor, "userName");
+      final int _cursorIndexOfUsername = CursorUtil.getColumnIndexOrThrow(_cursor, "username");
       final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "password");
       final int _cursorIndexOfDisplayName = CursorUtil.getColumnIndexOrThrow(_cursor, "displayName");
       final int _cursorIndexOfProfilePic = CursorUtil.getColumnIndexOrThrow(_cursor, "profilePic");
       final int _cursorIndexOfToken = CursorUtil.getColumnIndexOrThrow(_cursor, "token");
       final User _result;
       if(_cursor.moveToFirst()) {
-        final String _tmpUserName;
-        if (_cursor.isNull(_cursorIndexOfUserName)) {
-          _tmpUserName = null;
+        final String _tmpUsername;
+        if (_cursor.isNull(_cursorIndexOfUsername)) {
+          _tmpUsername = null;
         } else {
-          _tmpUserName = _cursor.getString(_cursorIndexOfUserName);
+          _tmpUsername = _cursor.getString(_cursorIndexOfUsername);
         }
         final String _tmpPassword;
         if (_cursor.isNull(_cursorIndexOfPassword)) {
@@ -255,10 +256,7 @@ public final class UserDao_Impl implements UserDao {
         } else {
           _tmpProfilePic = _cursor.getString(_cursorIndexOfProfilePic);
         }
-        _result = new User(_tmpUserName,_tmpPassword,_tmpDisplayName,_tmpProfilePic);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
-        _result.setId(_tmpId);
+        _result = new User(_tmpUsername,_tmpPassword,_tmpDisplayName,_tmpProfilePic);
         final String _tmpToken;
         if (_cursor.isNull(_cursorIndexOfToken)) {
           _tmpToken = null;

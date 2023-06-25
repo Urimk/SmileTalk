@@ -15,6 +15,7 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,12 +34,6 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
 
 
 
-    // To delete later
-    private boolean databaseExists() {
-        File dbFile = getDatabasePath("appDB");
-        return dbFile.exists();
-    }
-    //
 
 
 
@@ -53,95 +48,27 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-
-
-
-
-        // To delete later
-        String username = "Uri";
-        String password = "Qqwwee11";
-        String displayName = "Uri";
-        String profilePic = null;
-
-        curUser = new User(username, password, displayName, profilePic);
-
-        // Check if the database exists
-        if (!databaseExists()) {
-            // Create a new instance of AppDB and build the database
-            appDB = Room.databaseBuilder(getApplicationContext(), AppDB.class, "appDB").build();
-        } else {
-            // Database already exists, retrieve the existing instance
-            appDB = Room.databaseBuilder(getApplicationContext(), AppDB.class, "appDB").build();
-        }
-        User user1 =  new User("Bob", password, "Bob", profilePic);
-        User user2 = new User("John", password, "John", profilePic);
-        User user3 = new User("James", password, "James", profilePic);
-        User user4 = new User("Alex", password, "Alex", profilePic);
-        new Thread(() -> {
-            UserDao userDao = appDB.userDao();
-            userDao.insert(curUser);
-            userDao.insert(user1);
-            userDao.insert(user2);
-            userDao.insert(user3);
-            userDao.insert(user4);
-        }).start();
-        //
-
-        /*
-        User user1 =  new User("Bob", password, "Bob", profilePic);
-        User user2 = new User("John", password, "John", profilePic);
-        User user3 = new User("James", password, "James", profilePic);
-        User user4 = new User("Alex", password, "Alex", profilePic);
-        Message msg1 = new Message(user1,"00:00", "Hey");
-        Message msg2 = new Message(user2,"00:00", "Sup?");
-        Message msg3 = new Message(user1,"00:00", "All Good");
-        Message msg4 = new Message(user3,"00:00", "Hi");
-        Message msg5 = new Message(user4,"00:00", "Bye");
-        List<User> users1 = new ArrayList<>();
-        users1.add(user1);
-        users1.add(user2);
-        List<User> users2 = new ArrayList<>();
-        users1.add(user3);
-        users1.add(user4);
-        List<Message> msgs1 = new ArrayList<>();
-        msgs1.add(msg1);
-        msgs1.add(msg2);
-        msgs1.add(msg3);
-        List<Message> msgs2 = new ArrayList<>();
-        msgs2.add(msg4);
-        msgs2.add(msg5);
-        Chat chat1 = new Chat((ArrayList<User>) users1, (ArrayList<Message>) msgs1);
-        Chat chat2= new Chat((ArrayList<User>) users2, (ArrayList<Message>) msgs2);
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Prepare data
+        User a = new User("a","11","a","11");
+        a.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODc1MDUzOTF9.KeoQ1_dwh3-01pR70Th3h-ooqzbdlomQHT8AuIwV0dY");
+        User b = new User("b","11","a","11");
+        User c = new User("c","11","a","11");
         //curUser = getIntent().getParcelableExtra("user");
-
+        curUser = a;
         new Thread(() -> {
-            contactList = appDB.chatDao().getChatsWithUser(curUser.getUserName());
+            viewModel.getUserChats(curUser.getUsername());
+            contactList = viewModel.get().getValue();
             runOnUiThread(() -> {
                 // Set up the adapter
                 adapter = new ContactAdapter(contactList, curUser, this);
                 rvContacts.setAdapter(adapter);
             });
         }).start();
-
+        viewModel.reload(curUser.getToken());
         viewModel.get().observe(this, chats -> {
             if (adapter != null) {
                 adapter.setContactList(chats);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -155,7 +82,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
             if (addContactFragment == null && deleteContactFragment == null) {
                 // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding AddContactFragment
 
-                AddContactFragment fragment = new AddContactFragment(curUser, contactList);
+                AddContactFragment fragment = new AddContactFragment(curUser, contactList, viewModel);
                 fragment.setAddContactListener(ContactsActivity.this);
 
                 getSupportFragmentManager()
@@ -202,8 +129,9 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         //contactList.remove(position);
 
         // Notify the adapter of the data change
+        String chatID = viewModel.get().getValue().get(position).getId();
+        viewModel.delete(curUser.getToken(),chatID);
         adapter.notifyItemRemoved(position);
-
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 
@@ -222,14 +150,17 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
 
     public void onChatsAdded(List<Chat> chats) {
         // Add the new chat to the contactList
-        new Thread(() -> {
-            runOnUiThread(() -> adapter.setContactList(chats));
-        }).start();
-
+        adapter.setContactList(chats);
         // Notify the adapter of the data change
         adapter.notifyDataSetChanged();
 
         // Hide the overlay
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set the updated adapter to the RecyclerView
+        rvContacts.setAdapter(adapter);
     }
 }

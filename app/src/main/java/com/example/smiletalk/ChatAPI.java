@@ -15,18 +15,19 @@ public interface ChatAPI {
     Call<List<Chat>> getChats(@Header("Authorization") String authorization);
 
     @GET("Chats/{id}")
-    Call<Chat> getChat(@Path("id") int id,@Header("Authorization") String authorization);
+    Call<Chat> getChat(@Path("id") String id,@Header("Authorization") String authorization);
 
     @GET("Chats/{id}:Messages")
-    Call<List<Message>> getMessages(@Path("id") int id,@Header("Authorization") String authorization);
+    Call<List<Message>> getMessages(@Path("id") String id,@Header("Authorization") String authorization);
 
     @POST("Chats/{id}:Messages")
-    Call<Message> postMessege(@Path("id") int id,@Body Message msg,
+    Call<Message> postMessege(@Path("id") String id,@Body Message msg,
                               @Header("Authorization") String authorization);
 
     @POST("Chats")
     Call<Chat> createChat(@Body User contact, @Header("Authorization") String authorization);
 
     @DELETE("Chats/{id}")
-    Call<Chat> deleteChat(@Path("id") int id);
+    Call<Chat> deleteChat(@Path("id") String id, @Header("Authorization") String authorization);
 }
+

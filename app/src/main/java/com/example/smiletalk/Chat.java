@@ -1,5 +1,6 @@
 package com.example.smiletalk;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -8,8 +9,9 @@ import java.util.ArrayList;
 
 @Entity(tableName = "chats")
 public class Chat {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
+    @NonNull
+    private String id;
     @TypeConverters(UserListConverter.class)
     private ArrayList<User> users;
 
@@ -21,11 +23,11 @@ public class Chat {
         this.messages = messages;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

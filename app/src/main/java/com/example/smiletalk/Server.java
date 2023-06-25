@@ -94,7 +94,7 @@ public class Server {
 
     public CompletableFuture<Boolean> loginUser(User user, Context login) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
-        Call<String> call = this.token.logIn(new LoginUser(user.getUserName(),user.getPassword()));
+        Call<String> call = this.token.logIn(new LoginUser(user.getUsername(),user.getPassword()));
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -124,7 +124,7 @@ public class Server {
 
     public CompletableFuture<Boolean> getUser(User user, Context login) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
-        Call<User> call = this.user.getUser(user.getUserName(),user.getToken());
+        Call<User> call = this.user.getUser(user.getUsername(),user.getToken());
 
         call.enqueue(new Callback<User>() {
             @Override

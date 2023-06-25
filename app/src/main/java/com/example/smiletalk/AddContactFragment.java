@@ -19,14 +19,14 @@ public class AddContactFragment extends Fragment {
 
     private EditText usernameEditText;
     private AddContactListener addContactListener;
-    private AppDB appDB;
     private User curUser;
 
     private List<Chat> contactList;
-
-    public AddContactFragment(User curUser, List<Chat> contactList) {
+    private ViewModelChat viewModelChat;
+    public AddContactFragment(User curUser, List<Chat> contactList, ViewModelChat viewModelChat) {
         this.curUser = curUser;
         this.contactList = contactList;
+        this.viewModelChat = viewModelChat;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +37,7 @@ public class AddContactFragment extends Fragment {
 
         Button addButton = rootView.findViewById(R.id.addButton);
 
-        appDB = AppDB.getInstance(requireContext());
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,13 +47,13 @@ public class AddContactFragment extends Fragment {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        User contactUser = appDB.userDao().get(username);
+                        User contactUser = new User(username);
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (contactUser != null) {
-                                    if (contactUser.getUserName().equals(curUser.getUserName())) {
+                                    if (contactUser.getUsername().equals(curUser.getUsername())) {
                                         // Users can't chat themselves
                                         Toast.makeText(getContext(), "Users can't chat themselves", Toast.LENGTH_SHORT).show();
                                     } else {
@@ -65,7 +65,7 @@ public class AddContactFragment extends Fragment {
                                                     List<User> users = chat.getUsers();
 
                                                     for (User user : users) {
-                                                        if (user.getUserName().equals(contactUser.getUserName())) {
+                                                        if (user.getUsername().equals(contactUser.getUsername())) {
                                                             chatExists = true;
                                                             break;
                                                         }
@@ -105,35 +105,14 @@ public class AddContactFragment extends Fragment {
     }
 
     private void createNewChat(User contactUser) {
-        List<User> users = new ArrayList<>();
-        users.add(curUser);
-        users.add(contactUser);
+       viewModelChat.add(curUser.getToken(),contactUser).thenAccept(result->{
+           if (addContactListener != null && result) {
+               addContactListener.onChatsAdded(viewModelChat.get().getValue());
+           }else if (result = false){
+               Toast.makeText(getContext(), "User does not exist or have alread chat", Toast.LENGTH_SHORT).show();
+           }
 
-        List<Message> msgs = new ArrayList<>();
-
-        // Add first message which looks different!!!
-
-        Chat chat = new Chat((ArrayList<User>) users, (ArrayList<Message>) msgs);
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                appDB.chatDao().insert(chat);
-                contactList.add(chat);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (addContactListener != null) {
-                            addContactListener.onChatsAdded(contactList);
-                        }
-
-                        getParentFragmentManager().popBackStack();
-                    }
-                });
-            }
-        });
-        thread.start();
+       });
     }
 
     public void setAddContactListener(AddContactListener listener) {

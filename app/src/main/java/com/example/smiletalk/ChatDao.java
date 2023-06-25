@@ -10,13 +10,13 @@ import java.util.List;
 
 @Dao
 public interface ChatDao {
-    @Query("SELECT * FROM chats")
+    @Query("SELECT * FROM chats LIMIT 1")
     List<Chat> index();
 
     @Query("SELECT * FROM chats WHERE id = :id")
     Chat get(int id);
 
-    @Query("SELECT * FROM chats WHERE :username IN (SELECT userName FROM users)")
+    @Query("SELECT * FROM chats WHERE :username IN (SELECT username FROM users)")
     List<Chat> getChatsWithUser(String username);
 
     @Insert

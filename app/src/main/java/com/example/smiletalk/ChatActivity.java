@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
 
     //may not be needed
     private User curUser;
+    public static Context context;
 
 
 
@@ -48,7 +50,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
+        context = getApplicationContext();
         // Retrieve data from the intent
         // !!! Should change that only the name is passed and the rest
         // is loaded from the db/server maybe! !!!

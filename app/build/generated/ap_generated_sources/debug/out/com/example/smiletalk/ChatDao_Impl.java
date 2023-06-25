@@ -34,12 +34,16 @@ public final class ChatDao_Impl implements ChatDao {
     this.__insertionAdapterOfChat = new EntityInsertionAdapter<Chat>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `chats` (`id`,`users`,`messages`) VALUES (nullif(?, 0),?,?)";
+        return "INSERT OR ABORT INTO `chats` (`id`,`users`,`messages`) VALUES (?,?,?)";
       }
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
+        if (value.getId() == null) {
+          stmt.bindNull(1);
+        } else {
+          stmt.bindString(1, value.getId());
+        }
         final String _tmp = UserListConverter.fromArrayList(value.getUsers());
         if (_tmp == null) {
           stmt.bindNull(2);
@@ -62,7 +66,11 @@ public final class ChatDao_Impl implements ChatDao {
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
+        if (value.getId() == null) {
+          stmt.bindNull(1);
+        } else {
+          stmt.bindString(1, value.getId());
+        }
       }
     };
     this.__updateAdapterOfChat = new EntityDeletionOrUpdateAdapter<Chat>(__db) {
@@ -73,7 +81,11 @@ public final class ChatDao_Impl implements ChatDao {
 
       @Override
       public void bind(SupportSQLiteStatement stmt, Chat value) {
-        stmt.bindLong(1, value.getId());
+        if (value.getId() == null) {
+          stmt.bindNull(1);
+        } else {
+          stmt.bindString(1, value.getId());
+        }
         final String _tmp = UserListConverter.fromArrayList(value.getUsers());
         if (_tmp == null) {
           stmt.bindNull(2);
@@ -86,7 +98,11 @@ public final class ChatDao_Impl implements ChatDao {
         } else {
           stmt.bindString(3, _tmp_1);
         }
-        stmt.bindLong(4, value.getId());
+        if (value.getId() == null) {
+          stmt.bindNull(4);
+        } else {
+          stmt.bindString(4, value.getId());
+        }
       }
     };
     this.__preparedStmtOfClear = new SharedSQLiteStatement(__db) {
@@ -150,7 +166,7 @@ public final class ChatDao_Impl implements ChatDao {
 
   @Override
   public List<Chat> index() {
-    final String _sql = "SELECT * FROM chats";
+    final String _sql = "SELECT * FROM chats LIMIT 1";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
@@ -178,8 +194,12 @@ public final class ChatDao_Impl implements ChatDao {
         }
         _tmpMessages = MessageListConverter.fromString(_tmp_1);
         _item = new Chat(_tmpUsers,_tmpMessages);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final String _tmpId;
+        if (_cursor.isNull(_cursorIndexOfId)) {
+          _tmpId = null;
+        } else {
+          _tmpId = _cursor.getString(_cursorIndexOfId);
+        }
         _item.setId(_tmpId);
         _result.add(_item);
       }
@@ -221,8 +241,12 @@ public final class ChatDao_Impl implements ChatDao {
         }
         _tmpMessages = MessageListConverter.fromString(_tmp_1);
         _result = new Chat(_tmpUsers,_tmpMessages);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final String _tmpId;
+        if (_cursor.isNull(_cursorIndexOfId)) {
+          _tmpId = null;
+        } else {
+          _tmpId = _cursor.getString(_cursorIndexOfId);
+        }
         _result.setId(_tmpId);
       } else {
         _result = null;
@@ -236,7 +260,7 @@ public final class ChatDao_Impl implements ChatDao {
 
   @Override
   public List<Chat> getChatsWithUser(final String username) {
-    final String _sql = "SELECT * FROM chats WHERE ? IN (SELECT userName FROM users)";
+    final String _sql = "SELECT * FROM chats WHERE ? IN (SELECT username FROM users)";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
     if (username == null) {
@@ -270,8 +294,12 @@ public final class ChatDao_Impl implements ChatDao {
         }
         _tmpMessages = MessageListConverter.fromString(_tmp_1);
         _item = new Chat(_tmpUsers,_tmpMessages);
-        final int _tmpId;
-        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        final String _tmpId;
+        if (_cursor.isNull(_cursorIndexOfId)) {
+          _tmpId = null;
+        } else {
+          _tmpId = _cursor.getString(_cursorIndexOfId);
+        }
         _item.setId(_tmpId);
         _result.add(_item);
       }
