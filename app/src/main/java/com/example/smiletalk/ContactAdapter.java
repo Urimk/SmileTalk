@@ -60,6 +60,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         this.deleteContactListener = deleteContactListener;
     }
 
+
+
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -131,6 +133,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.timestampTextView.setText("16.06.23 : 08:16:00");
     }
 
+
+
     @Override
     public int getItemCount() {
         return contactList.size();
@@ -154,8 +158,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             timestampTextView = itemView.findViewById(R.id.timestampTextView);
         }
     }
-
-
 
 
     private Bitmap decodeBase64(String base64String) {
