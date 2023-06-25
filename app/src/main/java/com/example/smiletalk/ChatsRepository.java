@@ -13,14 +13,14 @@ public class ChatsRepository {
     private ChatDao dao;
     private ChatListData chatListData;
 
-    private ServerDao api;
+    private ServerChat api;
     public ChatsRepository() {
         AppDB db = Room.databaseBuilder(ContactsActivity.context, AppDB.class, "AppDB")
                 .fallbackToDestructiveMigration()
                 .build();
         dao = db.chatDao();
         chatListData = new ChatListData();
-        api = new ServerDao(chatListData,dao);
+        api = new ServerChat(chatListData,dao);
     }
 
 

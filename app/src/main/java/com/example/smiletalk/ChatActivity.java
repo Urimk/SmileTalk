@@ -4,6 +4,7 @@ package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     private RecyclerView messageRecyclerView;
     private MessageAdapter messageAdapter;
     private List<Message> messageList;
+    private ViewModelChat viewModelChat;
 
     //may not be needed
     private User curUser;
@@ -51,24 +53,21 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         context = getApplicationContext();
-        // Retrieve data from the intent
-        // !!! Should change that only the name is passed and the rest
-        // is loaded from the db/server maybe! !!!
         String contactName = getIntent().getStringExtra("contactName");
         String pic = getIntent().getStringExtra("contactPic");
-        String curUsername = getIntent().getStringExtra("curUser");
-        //find real later...
-        curUser = new User(curUsername, "111", "Me", null);
+        User curUser = (User)getIntent().getSerializableExtra("curUser");
+        Chat curChat = ContactAdapter.curChat;
 
 
         // Initialize views
+        viewModelChat =  new ViewModelProvider(this).get(ViewModelChat.class);
         avatarImageView = findViewById(R.id.avatarImageView);
         nameTextView = findViewById(R.id.nameTextView);
         deleteChatButton = findViewById(R.id.actionButton);
         messageEditText = findViewById(R.id.messageEditText);
         submitButton = findViewById(R.id.submitButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
-        messageList = new ArrayList<>();
+        messageList = curChat.getMessages();
         messageAdapter = new MessageAdapter(messageList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(layoutManager);
@@ -101,6 +100,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
 
                 Message message = new Message(curUser, getCurrentTimestamp(), messageEditText.getText().toString().trim());
                 if (message != null) {
+                    viewModelChat.sendMessage(curUser.getToken(),message,curChat.getId());
                     addMessageToScrollView(message);
                     messageEditText.getText().clear();
                 }
@@ -121,7 +121,6 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
             messageList.add(introMessage);
         }
 
-        messageList.add(message);
         messageAdapter.addMessage(message);
         messageRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }

@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
-
+    public static Chat curChat;
     public List<Chat> getContactList() {
         return contactList;
     }
@@ -100,10 +100,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 // Create an intent to start the ChatActivity
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("curUser", curUser.getUsername());
+                intent.putExtra("curUser", curUser);
                 intent.putExtra("contactName", otherUser.getUsername());
                 intent.putExtra("contactPic", otherUser.getProfilePic());
-                intent.putExtra("position", clickedPosition);
+                curChat = contactList.get(clickedPosition);
                 context.startActivity(intent);
             }
         });

@@ -53,7 +53,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         a.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODc1MDUzOTF9.KeoQ1_dwh3-01pR70Th3h-ooqzbdlomQHT8AuIwV0dY");
         User b = new User("b","11","a","11");
         User c = new User("c","11","a","11");
-        //curUser = getIntent().getParcelableExtra("user");
+        //curUser = Login.curUser;
         curUser = a;
         new Thread(() -> {
             viewModel.getUserChats(curUser.getUsername());

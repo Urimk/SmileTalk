@@ -3,10 +3,11 @@ package com.example.smiletalk;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ViewModelChat extends ViewModel {
+public class ViewModelChat extends ViewModel implements Serializable {
     private ChatsRepository repository;
     private LiveData<List<Chat>> chats;
 
@@ -33,5 +34,9 @@ public class ViewModelChat extends ViewModel {
 
     public void getUserChats(String username){
         repository.getUserChats(username);
+    }
+
+    public  void sendMessage(String token, Message msg, String chatID){
+        repository.sendMassge(token,msg,chatID);
     }
 }

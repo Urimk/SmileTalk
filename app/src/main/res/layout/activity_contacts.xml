@@ -18,7 +18,7 @@
             android:fontFamily="@font/poppins_bold"
             android:maxLines="1"
             android:paddingTop="7dp"
-            android:text="Messages"
+            android:text="Contacts"
             android:textColor="@color/gray"
             android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@+id/settingsIcon"

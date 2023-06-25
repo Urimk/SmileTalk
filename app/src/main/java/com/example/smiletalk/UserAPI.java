@@ -10,8 +10,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface UserAPI {
-    @GET("Users/{userName}")
-    Call<User> getUser(@Path("userName") String userName, @Header("authorization") String authorization);
+    @GET("Users/{username}")
+    Call<User> getUser(@Path("username") String userName, @Header("authorization") String authorization);
 
     @POST("Users")
     Call<User> createUser(@Body User user);

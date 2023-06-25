@@ -16,13 +16,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServerDao {
+public class ServerChat {
     private MutableLiveData<List<Chat>> chatListData;
     private ChatDao dao;
     private Retrofit retrofit;
     private ChatAPI chat;
 
-    public ServerDao(MutableLiveData<List<Chat>> chatListData, ChatDao dao) {
+    public ServerChat(MutableLiveData<List<Chat>> chatListData, ChatDao dao) {
         this.chatListData = chatListData;
         this.dao = dao;
 

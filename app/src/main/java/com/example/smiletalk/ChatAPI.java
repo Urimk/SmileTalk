@@ -17,10 +17,10 @@ public interface ChatAPI {
     @GET("Chats/{id}")
     Call<Chat> getChat(@Path("id") String id,@Header("Authorization") String authorization);
 
-    @GET("Chats/{id}:Messages")
+    @GET("Chats/{id}/Messages")
     Call<List<Message>> getMessages(@Path("id") String id,@Header("Authorization") String authorization);
 
-    @POST("Chats/{id}:Messages")
+    @POST("Chats/{id}/Messages")
     Call<Message> postMessege(@Path("id") String id,@Body Message msg,
                               @Header("Authorization") String authorization);
 
