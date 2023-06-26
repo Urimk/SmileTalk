@@ -1,12 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="LightTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="primary">@color/dm_light_blue</item>
-        <item name="bigText">@color/dm_gray</item>
-        <item name="attention">@color/dm_red</item>
-        <item name="background">@color/almost_black</item>
-        <item name="normalTxt">@color/white</item>
+        <item name="primary">@color/light_blue</item>
+        <item name="bigText">@color/gray</item>
+        <item name="attention">@color/red</item>
+        <item name="background">@color/white</item>
+        <item name="normalTxt">@color/black</item>
         <item name="secondary">@color/blue</item>
+        <item name="signInPic">@drawable/background</item>
 
     </style>
 

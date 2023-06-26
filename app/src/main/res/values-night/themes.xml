@@ -6,6 +6,8 @@
         <item name="attention">@color/dm_red</item>
         <item name="background">@color/almost_black</item>
         <item name="normalTxt">@color/white</item>
+        <item name="secondary">@color/blue</item>
+        <item name="signInPic">@drawable/dark_background</item>
 
     </style>
 

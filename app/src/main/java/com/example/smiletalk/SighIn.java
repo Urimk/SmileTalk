@@ -3,6 +3,7 @@ package com.example.smiletalk;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.room.Room;
 
 import android.app.Activity;
@@ -33,7 +34,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class SighIn extends AppCompatActivity {
+public class SighIn extends DarkAppCompact {
     private Server server;
     private Bitmap selectedImageBitmap;
     private static int MAXLENGTH = 200;
@@ -195,13 +196,14 @@ public class SighIn extends AppCompatActivity {
             }
         );
 
-        TextView settings = findViewById(R.id.settingsTextView);
-        registered.setOnClickListener(View -> {
+
+        TextView settingsTextView = findViewById(R.id.settingsTextView);
+        settingsTextView.setOnClickListener(View -> {
                     // Define the action to start the login activity here
-                    Intent intent = new Intent(this, Login.class);
+                    Intent intent = new Intent(this, SettingsActivity.class);
                     try {
                         startActivity(intent);
-                    } catch (Exception e){
+                    }catch (Exception e){
                     }
 
                 }
@@ -209,6 +211,5 @@ public class SighIn extends AppCompatActivity {
 
 
     }
-
 
 }

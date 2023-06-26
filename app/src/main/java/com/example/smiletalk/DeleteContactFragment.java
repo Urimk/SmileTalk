@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
 
-public class DeleteContactFragment extends Fragment {
+public class DeleteContactFragment extends DarkFragment {
 
     private int contactIndex;
     private DeleteContactListener deleteContactListener;
@@ -28,15 +26,6 @@ public class DeleteContactFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.delete_contact, container, false);
 
         Button deleteButton = rootView.findViewById(R.id.rightButton);
-
-        RelativeLayout overlay = rootView.findViewById(R.id.blockClick);
-
-        overlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Consume the touch event to prevent it from reaching the underlying views
-            }
-        });
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

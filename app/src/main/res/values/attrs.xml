@@ -6,4 +6,5 @@
     <attr name="attention" format="reference"/>
     <attr name="background" format="reference"/>
     <attr name="normalTxt" format="reference"/>
+    <attr name="signInPic" format="reference"/>
 </resources>
