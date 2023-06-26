@@ -59,7 +59,7 @@ public class ServerChat {
             @Override
             public void onFailure(Call<List<Chat>> call, Throwable t) {
                 // Handle failure case
-                Toast.makeText(ContactsActivity.context, "Server on Room did not respond!!!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ContactsActivity.context, "server did not respond, check internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }

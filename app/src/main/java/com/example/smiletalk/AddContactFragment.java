@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,66 +40,60 @@ public class AddContactFragment extends Fragment {
 
 
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
+        addButton.setOnClickListener(v -> {
+            String username = usernameEditText.getText().toString();
 
-                Thread thread = new Thread(new Runnable() {
+            Thread thread = new Thread(() -> {
+                User contactUser = new User(username);
+
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        User contactUser = new User(username);
+                        if (contactUser != null) {
+                            if (contactUser.getUsername().equals(curUser.getUsername())) {
+                                // Users can't chat themselves
+                                Toast.makeText(getContext(), "Users can't chat themselves", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Thread thread1 = new Thread(new Runnable() {
+                                    boolean chatExists = false;
+                                    @Override
+                                    public void run() {
+                                        for (Chat chat : contactList) {
+                                            List<User> users = chat.getUsers();
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (contactUser != null) {
-                                    if (contactUser.getUsername().equals(curUser.getUsername())) {
-                                        // Users can't chat themselves
-                                        Toast.makeText(getContext(), "Users can't chat themselves", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Thread thread = new Thread(new Runnable() {
-                                            boolean chatExists = false;
+                                            for (User user : users) {
+                                                if (user.getUsername().equals(contactUser.getUsername())) {
+                                                    chatExists = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (chatExists) {
+                                                break;
+                                            }
+                                        }
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                for (Chat chat : contactList) {
-                                                    List<User> users = chat.getUsers();
-
-                                                    for (User user : users) {
-                                                        if (user.getUsername().equals(contactUser.getUsername())) {
-                                                            chatExists = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (chatExists) {
-                                                        break;
-                                                    }
+                                                if (chatExists) {
+                                                    // Chat already exists
+                                                    Toast.makeText(getContext(), "Chat already exists", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    createNewChat(contactUser);
                                                 }
-                                                getActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        if (chatExists) {
-                                                            // Chat already exists
-                                                            Toast.makeText(getContext(), "Chat already exists", Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            createNewChat(contactUser);
-                                                        }
-                                                    }
-                                                });
                                             }
                                         });
-                                        thread.start();
                                     }
-                                } else {
-                                    // User does not exist
-                                    Toast.makeText(getContext(), "User does not exist", Toast.LENGTH_SHORT).show();
-                                }
+                                });
+                                thread1.start();
                             }
-                        });
+                        } else {
+                            // User does not exist
+                            Toast.makeText(getContext(), "User does not exist", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                thread.start();
-            }
+            });
+            thread.start();
         });
 
         return rootView;
@@ -108,8 +103,8 @@ public class AddContactFragment extends Fragment {
        viewModelChat.add(curUser.getToken(),contactUser).thenAccept(result->{
            if (addContactListener != null && result) {
                addContactListener.onChatsAdded(viewModelChat.get().getValue());
-           }else if (result = false){
-               Toast.makeText(getContext(), "User does not exist or have alread chat", Toast.LENGTH_SHORT).show();
+           }else if (!result){
+               Toast.makeText(getContext(), "User does not exist or have already chat", Toast.LENGTH_SHORT).show();
            }
 
        });
