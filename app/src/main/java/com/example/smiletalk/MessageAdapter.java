@@ -25,6 +25,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
         if (viewType == 0) {
+            // Use the new_layout for the first message
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.intro_msg, parent, false);
+        } else if (viewType == 1) {
             // Inflate the message_sent layout for messages from the current user
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_sent, parent, false);
         } else {
@@ -40,6 +43,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         holder.messageTextView.setText(message.getContent());
         holder.timestampTextView.setText(message.getTime());
+
+        // You can customize the gravity of the messageTextView based on the sender
+        if (message.getSender().getUserName().equals(curUser)) {
+            holder.messageTextView.setGravity(Gravity.END);
+        } else {
+            holder.messageTextView.setGravity(Gravity.START);
+        }
     }
 
     @Override
@@ -49,12 +59,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public int getItemViewType(int position) {
-        // Return 0 if the message is from the current user, 1 otherwise
-        Message message = messageList.get(position);
-        if (message.getSender().getUserName().equals(curUser)) {
+        if (position == 0) {
+            // Return 0 for the first message
             return 0;
         } else {
-            return 1;
+            Message message = messageList.get(position - 1); // Adjusted position to exclude the first message
+            if (message.getSender().getUserName().equals(curUser)) {
+                return 1; // Sent message
+            } else {
+                return 2; // Received message
+            }
         }
     }
 
@@ -74,6 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
     }
 }
+
 
 
 

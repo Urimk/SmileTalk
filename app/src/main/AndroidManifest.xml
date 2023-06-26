@@ -10,7 +10,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/smiletalklogo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/smiletalklogo_rounded"
+        android:roundIcon="@drawable/r_smiletalklogo"
         android:supportsRtl="false"
         android:theme="@style/Theme.SmileTalk"
         android:usesCleartextTraffic="true"
