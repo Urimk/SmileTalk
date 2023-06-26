@@ -166,7 +166,7 @@ public final class ChatDao_Impl implements ChatDao {
 
   @Override
   public List<Chat> index() {
-    final String _sql = "SELECT * FROM chats LIMIT 1";
+    final String _sql = "SELECT * FROM chats";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
@@ -211,11 +211,15 @@ public final class ChatDao_Impl implements ChatDao {
   }
 
   @Override
-  public Chat get(final int id) {
+  public Chat get(final String id) {
     final String _sql = "SELECT * FROM chats WHERE id = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
-    _statement.bindLong(_argIndex, id);
+    if (id == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, id);
+    }
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {

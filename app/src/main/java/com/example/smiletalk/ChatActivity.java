@@ -100,7 +100,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
 
                 Message message = new Message(curUser, getCurrentTimestamp(), messageEditText.getText().toString().trim());
                 if (message != null) {
-                    viewModelChat.sendMessage(curUser.getToken(),message,curChat.getId());
+                    viewModelChat.sendMessage(curUser.getToken(),curUser.getUsername(),message,curChat.getId());
                     addMessageToScrollView(message);
                     messageEditText.getText().clear();
                 }

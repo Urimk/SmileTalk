@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ChatsRepository {
     private ChatDao dao;
     private ChatListData chatListData;
+    private MessagesDao mesDao;
 
     private ServerChat api;
     public ChatsRepository() {
@@ -19,14 +20,15 @@ public class ChatsRepository {
                 .fallbackToDestructiveMigration()
                 .build();
         dao = db.chatDao();
+        mesDao = db.mesDao();
         chatListData = new ChatListData();
-        api = new ServerChat(chatListData,dao);
+        api = new ServerChat(chatListData,dao,mesDao);
     }
 
 
-    public boolean sendMassge(String token, Message msg, String chatID) {
+    public boolean sendMassge(String token,String username, Message msg, String chatID) {
         AtomicBoolean res = new AtomicBoolean(false);
-        api.sendMessage(token,chatID,msg,ChatActivity.context).thenAccept(result->{
+        api.sendMessage(token,username,chatID,msg,ChatActivity.context).thenAccept(result->{
             if(result)
                 res.set(true);
         });
@@ -46,8 +48,8 @@ public class ChatsRepository {
         return res.get();
     }
 
-    public void reload(String token) {
-        api.get(token);
+    public void reload(String token,String username) {
+        api.get(token,username);
     }
 
     public LiveData<List<Chat>> getAll() {

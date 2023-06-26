@@ -19,26 +19,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServerChat {
     private MutableLiveData<List<Chat>> chatListData;
     private ChatDao dao;
+    private MessagesDao mesDao;
     private Retrofit retrofit;
     private ChatAPI chat;
 
-    public ServerChat(MutableLiveData<List<Chat>> chatListData, ChatDao dao) {
+    public ServerChat(MutableLiveData<List<Chat>> chatListData, ChatDao dao,
+                      MessagesDao mesDao) {
         this.chatListData = chatListData;
         this.dao = dao;
+        this.mesDao = mesDao;
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.169:5000/api/")
+                .baseUrl("http://10.0.2.2:5000/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         chat = retrofit.create(ChatAPI.class);
     }
 
-    public void get(String token) {
+    public void get(String token, String username) {
         Call<List<Chat>> call = chat.getChats(token);
         call.enqueue(new Callback<List<Chat>>() {
             @Override
             public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
                 new Thread(() -> {
+                    chatListData.postValue(index(username));
                     List<Chat> chats = response.body();
                     chatListData.postValue(chats);
                     for (Chat c: chats) {
@@ -48,10 +52,8 @@ public class ServerChat {
                         }
 
                     }
-                    dao.clear();
-                    assert chats != null;
                     for(Chat c : chats){
-                        dao.insert(c);
+                        insert(c);
                     }
                 }).start();
             }
@@ -72,15 +74,14 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.isSuccessful()) {
-                    new Thread(() -> {
                         future.complete(true);
                         assert response.body() != null;
                         Chat newChat = response.body();
                         List<Chat> currentChats = chatListData.getValue();
                         currentChats.add(newChat);
                         chatListData.postValue(currentChats);
-
-                        dao.insert(newChat);
+                    new Thread(() -> {
+                        insert(newChat);
                     }).start();
                 } else {
                     Toast.makeText(ContactsActivity.context, "could not create the chat", Toast.LENGTH_SHORT).show();
@@ -106,6 +107,9 @@ public class ServerChat {
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.code() == 204) {
                         future.complete(true);
+                    new Thread(() -> {
+                        delete(chatID);
+                    }).start();
                 } else {
                     future.complete(false);
                 }
@@ -129,13 +133,7 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Chat> call, @NonNull Response<Chat> response) {
                 if (response.isSuccessful()) {
-                    new Thread(() -> {
-                        future.complete(true);
-                        assert response.body() != null;
-                        Chat newChat = response.body();
-                        dao.insert(newChat);
-                        chatListData.postValue(dao.index());
-                    }).start();
+                    future.complete(true);
                 } else {
                     future.complete(false);
                 }
@@ -151,7 +149,8 @@ public class ServerChat {
         return future;
     }
 
-    public CompletableFuture<Boolean> getMessages(String token, String chatID,List<Message> messages,Context chat)  {
+    public CompletableFuture<Boolean> getMessages(String token, String chatID,List<Message> messages,Context chat,
+                                                  String username)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<List<Message>> call = this.chat.getMessages(chatID,token);
@@ -159,12 +158,7 @@ public class ServerChat {
             @Override
             public void onResponse(Call<List<Message>> call, @NonNull Response<List<Message>> response) {
                 if (response.isSuccessful()) {
-                    new Thread(() -> {
-                        future.complete(true);
-                        assert response.body() != null;
-                        //refresh all the chats
-                        get(token);
-                    }).start();
+                    future.complete(true);
 
                 } else {
                     future.complete(false);
@@ -182,7 +176,7 @@ public class ServerChat {
         return future;
     }
 
-    public CompletableFuture<Boolean> sendMessage(String token, String chatID,Message msg,Context chat)  {
+    public CompletableFuture<Boolean> sendMessage(String token,String username, String chatID,Message msg,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Message> call = this.chat.postMessege(chatID,msg,token);
@@ -190,12 +184,9 @@ public class ServerChat {
             @Override
             public void onResponse(Call<Message> call, @NonNull Response<Message> response) {
                 if (response.isSuccessful()) {
-                    new Thread(() -> {
-                        future.complete(true);
-                        assert response.body() != null;
-                        //refresh all the chats
-                        get(token);
-                    }).start();
+                    future.complete(true);
+                    //refresh all the chats
+                    get(token, username);
                 } else {
                     future.complete(false);
                 }
@@ -212,6 +203,31 @@ public class ServerChat {
         return future;
     }
 
+    public void insert(Chat chat){
+        if(mesDao.get(chat.getId()) != null)
+            return;
+        mesDao.insert(new MessageList(chat.getMessages(),chat.getId()));
+        chat.setMessages(null);
+        dao.insert(chat);
+    }
 
+    public void update(String chatID){
+        Chat chat = dao.get(chatID);
+        mesDao.update(new MessageList(chat.getMessages(),chat.getId()));
+    }
 
+    public void delete(String chatID){
+        Chat chat = dao.get(chatID);
+        mesDao.delete(new MessageList(chat.getMessages(),chat.getId()));
+        chat.setMessages(null);
+        dao.delete(chat);
+    }
+
+    public List<Chat> index(String username){
+        List<Chat> chats = dao.getChatsWithUser(username);
+        for(Chat c : chats){
+            c.setMessages(mesDao.get(c.getId()).getMessages());
+        }
+        return chats;
+    }
 }

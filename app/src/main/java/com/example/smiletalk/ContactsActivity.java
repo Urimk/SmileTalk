@@ -64,7 +64,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
                 rvContacts.setAdapter(adapter);
             });
         }).start();
-        viewModel.reload(curUser.getToken());
+        viewModel.reload(curUser.getToken(),curUser.getUsername());
         viewModel.get().observe(this, chats -> {
             if (adapter != null) {
                 adapter.setContactList(chats);

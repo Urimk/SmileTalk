@@ -28,15 +28,15 @@ public class ViewModelChat extends ViewModel implements Serializable {
         repository.delete(token,rem);
     }
 
-    public void reload(String token) {
-        repository.reload(token);
+    public void reload(String token, String username) {
+        repository.reload(token,username);
     }
 
     public void getUserChats(String username){
         repository.getUserChats(username);
     }
 
-    public  void sendMessage(String token, Message msg, String chatID){
-        repository.sendMassge(token,msg,chatID);
+    public  void sendMessage(String token,String username, Message msg, String chatID){
+        repository.sendMassge(token,username,msg,chatID);
     }
 }
