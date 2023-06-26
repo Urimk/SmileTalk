@@ -9,10 +9,32 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Patterns;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     public static final String DARK_MODE_KEY = "darkModeKey";
+    public static final String IP_ADDRESS_KEY = "ipAddressKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +55,18 @@ public class SettingsActivity extends AppCompatActivity {
                 recreate(); // Recreate the activity to apply the new theme
             }
         });
+
+        EditText ipEditText = findViewById(R.id.ipEditText);
+        ipEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String ipAddress = ipEditText.getText().toString().trim();
+                if (!isValidIpAddress(ipAddress)) {
+                    Toast.makeText(SettingsActivity.this, "Illegal address", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveIpAddress(ipAddress);
+                }
+            }
+        });
     }
 
     private void applyTheme(boolean isDarkModeOn) {
@@ -49,6 +83,19 @@ public class SettingsActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private boolean isValidIpAddress(String ipAddress) {
+        // Regular expression pattern for IPv4 address with port number
+        String ipv4Pattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(:\\d{1,5})?$";
 
+        return ipAddress.matches(ipv4Pattern);
+    }
+
+    private void saveIpAddress(String ipAddress) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(IP_ADDRESS_KEY, ipAddress);
+        editor.apply();
+    }
 }
+
+
 
