@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blockClick"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/rounded_lb_border"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Are you sure you want to log out?"
+            android:textColor="?attr/bigText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <View
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_alignStart="@id/leftButton"
+                android:layout_alignLeft="@id/leftButton"
+                android:layout_alignTop="@id/leftButton"
+                android:layout_alignBottom="@id/leftButton"
+                android:background="@drawable/rounded_lb2_border"
+                android:elevation="2dp" />
+
+            <Button
+                android:id="@+id/leftButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="40dp"
+                android:backgroundTint="?attr/background"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Cancel"
+                android:textColor="?attr/normalTxt" />
+
+            <Button
+                android:id="@+id/rightButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/leftButton"
+                android:layout_toRightOf="@id/leftButton"
+                android:layout_alignTop="@id/leftButton"
+                android:layout_alignBottom="@id/leftButton"
+                android:backgroundTint="?attr/attention"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Logout" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

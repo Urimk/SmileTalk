@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -102,6 +103,14 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
                     addMessageToScrollView(message);
                     messageEditText.getText().clear();
                 }
+            }
+        });
+
+        ImageView backBtn = findViewById(R.id.backIcon);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

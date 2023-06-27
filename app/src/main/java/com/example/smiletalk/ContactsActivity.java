@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -55,17 +56,6 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
 
-
-
-
-        // To delete later
-        String username = "Uri";
-        String password = "Qqwwee11";
-        String displayName = "Uri";
-        String profilePic = null;
-
-        curUser = new User(username, password, displayName, profilePic);
-
         // Check if the database exists
         if (!databaseExists()) {
             // Create a new instance of AppDB and build the database
@@ -74,62 +64,6 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
             // Database already exists, retrieve the existing instance
             appDB = Room.databaseBuilder(getApplicationContext(), AppDB.class, "appDB").build();
         }
-        User user1 =  new User("Bob", password, "Bob", profilePic);
-        User user2 = new User("John", password, "John", profilePic);
-        User user3 = new User("James", password, "James", profilePic);
-        User user4 = new User("Alex", password, "Alex", profilePic);
-        new Thread(() -> {
-            UserDao userDao = appDB.userDao();
-            userDao.insert(curUser);
-            userDao.insert(user1);
-            userDao.insert(user2);
-            userDao.insert(user3);
-            userDao.insert(user4);
-        }).start();
-        //
-
-        /*
-        User user1 =  new User("Bob", password, "Bob", profilePic);
-        User user2 = new User("John", password, "John", profilePic);
-        User user3 = new User("James", password, "James", profilePic);
-        User user4 = new User("Alex", password, "Alex", profilePic);
-        Message msg1 = new Message(user1,"00:00", "Hey");
-        Message msg2 = new Message(user2,"00:00", "Sup?");
-        Message msg3 = new Message(user1,"00:00", "All Good");
-        Message msg4 = new Message(user3,"00:00", "Hi");
-        Message msg5 = new Message(user4,"00:00", "Bye");
-        List<User> users1 = new ArrayList<>();
-        users1.add(user1);
-        users1.add(user2);
-        List<User> users2 = new ArrayList<>();
-        users1.add(user3);
-        users1.add(user4);
-        List<Message> msgs1 = new ArrayList<>();
-        msgs1.add(msg1);
-        msgs1.add(msg2);
-        msgs1.add(msg3);
-        List<Message> msgs2 = new ArrayList<>();
-        msgs2.add(msg4);
-        msgs2.add(msg5);
-        Chat chat1 = new Chat((ArrayList<User>) users1, (ArrayList<Message>) msgs1);
-        Chat chat2= new Chat((ArrayList<User>) users2, (ArrayList<Message>) msgs2);
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Prepare data
-        //curUser = getIntent().getParcelableExtra("user");
 
         new Thread(() -> {
             contactList = appDB.chatDao().getChatsWithUser(curUser.getUserName());
@@ -169,14 +103,46 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
             }
         });
 
+        Button logoutButton = findViewById(R.id.actionButton);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLogoutDialog();
+            }
+        });
+
     }
+
+    public void showLogoutDialog() {
+        Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
+        Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+        Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
+
+        if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
+            LogoutFragment fragment = new LogoutFragment();
+            // Pass the index of the item to the fragment
+
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, fragment, "LogoutFragment")
+                    .addToBackStack(null)
+                    .commit();
+
+            findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     public void showDeleteContactDialog(int position) {
         // Check if the AddContactFragment is already added
         Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
         Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+        Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
 
-        if (addContactFragment == null && deleteContactFragment == null) {
+        if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
             // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding DeleteContactFragment
             DeleteContactFragment fragment = new DeleteContactFragment(position);
             // Pass the index of the item to the fragment
