@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class ContactsActivity extends AppCompatActivity implements AddContactListener, DeleteContactListener  {
+
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;

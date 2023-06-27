@@ -29,9 +29,13 @@ public class ChatsRepository {
     public boolean sendMassge(String token,String username, Message msg, String chatID) {
         AtomicBoolean res = new AtomicBoolean(false);
         api.sendMessage(token,username,chatID,msg,ChatActivity.context).thenAccept(result->{
-            if(result)
-                res.set(true);
-        });
+            if(result) {
+                api.getMessages(token, chatID, ChatActivity.context).thenAccept(r -> {
+                    if (r)
+                        res.set(true);
+                });
+            };
+            });
         return res.get();
     }
     public CompletableFuture<Boolean> add(String token, User other) {

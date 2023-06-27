@@ -30,7 +30,7 @@ public class ServerChat {
         this.mesDao = mesDao;
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/api/")
+                .baseUrl(BaseUrl.ip)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         chat = retrofit.create(ChatAPI.class);
@@ -149,8 +149,7 @@ public class ServerChat {
         return future;
     }
 
-    public CompletableFuture<Boolean> getMessages(String token, String chatID,List<Message> messages,Context chat,
-                                                  String username)  {
+    public CompletableFuture<Boolean> getMessages(String token, String chatID,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<List<Message>> call = this.chat.getMessages(chatID,token);

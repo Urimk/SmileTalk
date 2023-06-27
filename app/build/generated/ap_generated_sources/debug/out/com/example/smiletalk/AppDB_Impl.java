@@ -34,21 +34,25 @@ public final class AppDB_Impl extends AppDB {
 
   private volatile ChatDao _chatDao;
 
+  private volatile MessagesDao _messagesDao;
+
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(4) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(5) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`username` TEXT NOT NULL, `password` TEXT, `displayName` TEXT, `profilePic` TEXT, `token` TEXT, PRIMARY KEY(`username`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `chats` (`id` TEXT NOT NULL, `users` TEXT, `messages` TEXT, PRIMARY KEY(`id`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `messages` (`messages` TEXT, `chatID` TEXT NOT NULL, PRIMARY KEY(`chatID`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fa895c69e71bf22a58c7bec44af3bd8a')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cbb14a756e6ba047ad9270080e7922c1')");
       }
 
       @Override
       public void dropAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("DROP TABLE IF EXISTS `users`");
         _db.execSQL("DROP TABLE IF EXISTS `chats`");
+        _db.execSQL("DROP TABLE IF EXISTS `messages`");
         if (mCallbacks != null) {
           for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
             mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -115,9 +119,21 @@ public final class AppDB_Impl extends AppDB {
                   + " Expected:\n" + _infoChats + "\n"
                   + " Found:\n" + _existingChats);
         }
+        final HashMap<String, TableInfo.Column> _columnsMessages = new HashMap<String, TableInfo.Column>(2);
+        _columnsMessages.put("messages", new TableInfo.Column("messages", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMessages.put("chatID", new TableInfo.Column("chatID", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysMessages = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesMessages = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoMessages = new TableInfo("messages", _columnsMessages, _foreignKeysMessages, _indicesMessages);
+        final TableInfo _existingMessages = TableInfo.read(_db, "messages");
+        if (! _infoMessages.equals(_existingMessages)) {
+          return new RoomOpenHelper.ValidationResult(false, "messages(com.example.smiletalk.MessageList).\n"
+                  + " Expected:\n" + _infoMessages + "\n"
+                  + " Found:\n" + _existingMessages);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "fa895c69e71bf22a58c7bec44af3bd8a", "2798d6da0e778bc0e9834ca96b36cd5f");
+    }, "cbb14a756e6ba047ad9270080e7922c1", "ec5d10d9485382f592d0220ffec1b124");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)
@@ -130,7 +146,7 @@ public final class AppDB_Impl extends AppDB {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","chats");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","chats","messages");
   }
 
   @Override
@@ -141,6 +157,7 @@ public final class AppDB_Impl extends AppDB {
       super.beginTransaction();
       _db.execSQL("DELETE FROM `users`");
       _db.execSQL("DELETE FROM `chats`");
+      _db.execSQL("DELETE FROM `messages`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -156,6 +173,7 @@ public final class AppDB_Impl extends AppDB {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
     _typeConvertersMap.put(UserDao.class, UserDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(ChatDao.class, ChatDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(MessagesDao.class, MessagesDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -195,6 +213,20 @@ public final class AppDB_Impl extends AppDB {
           _chatDao = new ChatDao_Impl(this);
         }
         return _chatDao;
+      }
+    }
+  }
+
+  @Override
+  public MessagesDao mesDao() {
+    if (_messagesDao != null) {
+      return _messagesDao;
+    } else {
+      synchronized(this) {
+        if(_messagesDao == null) {
+          _messagesDao = new MessagesDao_Impl(this);
+        }
+        return _messagesDao;
       }
     }
   }
