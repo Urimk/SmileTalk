@@ -2,12 +2,18 @@ package com.example.smiletalk;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import static com.example.smiletalk.NotificationUtils.CHANNEL_ID;
+import static com.example.smiletalk.NotificationUtils.createNotificationChannel;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -37,6 +43,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         server = new Server();
+        createNotificationChannel(this);
 
         Button loginInBottom = findViewById(R.id.loginBottom);
         loginInBottom.setOnClickListener(

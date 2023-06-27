@@ -24,10 +24,19 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
 
 
     private RecyclerView rvContacts;
-    private ContactAdapter adapter;
-    private ViewModelChat viewModel;
+    private static ContactAdapter adapter;
+    public static ViewModelChat viewModel;
     public static Context context;
-    private User curUser;
+
+    public static User getCurUser() {
+        return curUser;
+    }
+
+    public void setCurUser(User curUser) {
+        this.curUser = curUser;
+    }
+
+    private static User curUser;
 
     private List<Chat> contactList;
 
@@ -51,12 +60,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         // Prepare data
-        User a = new User("a","11","a","11");
-        a.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODc1MDUzOTF9.KeoQ1_dwh3-01pR70Th3h-ooqzbdlomQHT8AuIwV0dY");
-        User b = new User("b","11","a","11");
-        User c = new User("c","11","a","11");
-        //curUser = Login.curUser;
-        curUser = a;
+        curUser = Login.curUser;
         new Thread(() -> {
             viewModel.getUserChats(curUser.getUsername());
             contactList = viewModel.get().getValue();
@@ -165,4 +169,14 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         // Set the updated adapter to the RecyclerView
         rvContacts.setAdapter(adapter);
     }
+
+    public static void refresh(){
+        User u = getCurUser();
+        if(u != null){
+          viewModel.reload(curUser.getToken(),curUser.getUsername());
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+
 }
