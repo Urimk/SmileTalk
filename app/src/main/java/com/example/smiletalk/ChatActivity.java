@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,14 +21,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatActivity extends AppCompatActivity implements DeleteContactListener {
+public class ChatActivity extends DarkAppCompact implements DeleteContactListener {
 
     private ImageView avatarImageView;
     private TextView nameTextView;
@@ -43,10 +41,6 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     //may not be needed
     private User curUser;
 
-    private AppDB appDB;
-
-    private Chat curChat;
-
 
 
 
@@ -54,36 +48,15 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-        appDB = AppDB.getInstance(getApplicationContext());
 
         // Retrieve data from the intent
+        // !!! Should change that only the name is passed and the rest
+        // is loaded from the db/server maybe! !!!
+        String contactName = getIntent().getStringExtra("contactName");
+        String pic = getIntent().getStringExtra("contactPic");
         String curUsername = getIntent().getStringExtra("curUser");
-        Thread userThread = new Thread(() -> {
-            curUser = appDB.userDao().get(curUsername);
-        });
-
-        int chatId = getIntent().getIntExtra("chatId", -1);
-        Thread chatThread = new Thread(() -> {
-            curChat = appDB.chatDao().get(chatId);
-        });
-        try {
-            userThread.start();
-            chatThread.start();
-            userThread.join();
-            chatThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        User contact = null;
-        for (User user : curChat.getUsers()) {
-            if (!user.getUserName().equals(curUser.getUserName())) {
-                contact = user;
-                break;
-            }
-        }
-        String contactName = contact.getUserName();
-        String pic = contact.getProfilePic();
+        //find real later...
+        curUser = new User(curUsername, "111", "Me", null);
 
 
         // Initialize views
@@ -94,7 +67,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
         submitButton = findViewById(R.id.submitButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messageList);
+        messageAdapter = new MessageAdapter(messageList, curUsername);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(layoutManager);
         messageRecyclerView.setAdapter(messageAdapter);

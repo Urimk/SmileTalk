@@ -1,7 +1,9 @@
 package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -11,17 +13,16 @@ import android.widget.EditText;
 
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 
 
-public class Login extends AppCompatActivity {
+public class Login extends DarkAppCompact {
     private Server server;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        server = new Server();
-
+        Context context = getApplicationContext();
+        server = new Server(context);
         Button loginInBottom = findViewById(R.id.loginBottom);
         loginInBottom.setOnClickListener(
                 view -> {
@@ -73,5 +74,4 @@ public class Login extends AppCompatActivity {
                 }
         );
     }
-
 }

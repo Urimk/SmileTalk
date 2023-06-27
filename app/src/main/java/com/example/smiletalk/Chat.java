@@ -6,20 +6,10 @@ import androidx.room.TypeConverters;
 
 import java.util.ArrayList;
 
-
 @Entity(tableName = "chats")
 public class Chat {
-    public int getPrimery() {
-        return primery;
-    }
-
-    public void setPrimery(int primery) {
-        this.primery = primery;
-    }
-
     @PrimaryKey(autoGenerate = true)
-    private int primery;
-    private String id;
+    private int id;
     @TypeConverters(UserListConverter.class)
     private ArrayList<User> users;
 
@@ -31,11 +21,11 @@ public class Chat {
         this.messages = messages;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,6 +1,7 @@
 package com.example.smiletalk;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,7 +42,9 @@ public class Server {
     }
 
 
-    public Server() {
+    public Server(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsActivity.DARK_MODE_KEY, Context.MODE_PRIVATE);
+        String ipAddress = sharedPreferences.getString(SettingsActivity.IP_ADDRESS_KEY, "");
         // Create an instance of HttpLoggingInterceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -53,7 +56,7 @@ public class Server {
 
         // Create Retrofit instance with the OkHttpClient
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/api/")
+                .baseUrl("http://" + ipAddress + "/")
                 .client(httpClient) // Set the OkHttpClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -2,7 +2,10 @@ package com.example.smiletalk;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 
 
@@ -15,6 +18,7 @@ import android.util.Patterns;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,17 +61,32 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         EditText ipEditText = findViewById(R.id.ipEditText);
-        ipEditText.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
+        Button setButton = findViewById(R.id.setButton);
+
+        setButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 String ipAddress = ipEditText.getText().toString().trim();
                 if (!isValidIpAddress(ipAddress)) {
                     Toast.makeText(SettingsActivity.this, "Illegal address", Toast.LENGTH_SHORT).show();
                 } else {
                     saveIpAddress(ipAddress);
+                    Toast.makeText(SettingsActivity.this, "IP address changed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        TextView resetIpText = findViewById(R.id.resetIpText);
+        resetIpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveIpAddress(getString(R.string.BaseUrl));
+                Toast.makeText(SettingsActivity.this, "IP address reset to default", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
 
     private void applyTheme(boolean isDarkModeOn) {
         int mode = isDarkModeOn ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;

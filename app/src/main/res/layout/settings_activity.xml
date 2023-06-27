@@ -71,11 +71,34 @@
         android:hint="Enter IP of the server"
         android:padding="12dp" />
 
+    <FrameLayout
+        android:id="@+id/setButtonFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/ipEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp">
+
+        <View
+            android:layout_width="124dp"
+            android:layout_height="48dp"
+            android:background="@drawable/add_button_background" />
+
+        <Button
+            android:id="@+id/setButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:text="Set" />
+    </FrameLayout>
+
+
     <TextView
         android:id="@+id/resetIpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ipEditText"
+        android:layout_below="@id/setButtonFrame"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:text="Reset to default IP"

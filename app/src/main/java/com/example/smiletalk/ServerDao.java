@@ -6,13 +6,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.smiletalk.Chat;
-import com.example.smiletalk.ChatAPI;
-import com.example.smiletalk.ChatDao;
-import com.example.smiletalk.User;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,30 +34,25 @@ public class ServerDao {
 
     public void get(String token) {
         Call<List<Chat>> call = chat.getChats(token);
-        try {
-            call.enqueue(new Callback<List<Chat>>() {
-                @Override
-                public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
-                    chatListData.setValue(response.body());
-                    new Thread(() -> {
-                        List<Chat> chats = response.body();
-                        dao.clear();
-                        assert chats != null;
-                        for(Chat c : chats)
-                            dao.insert(c);
-                    }).start();
-                }
+        call.enqueue(new Callback<List<Chat>>() {
+            @Override
+            public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
+                new Thread(() -> {
+                    List<Chat> chats = response.body();
+                    dao.clear();
+                    assert chats != null;
+                    for(Chat c : chats)
+                        dao.insert(c);
+                    chatListData.postValue(dao.index());
+                }).start();
+            }
 
-                @Override
-                public void onFailure(Call<List<Chat>> call, Throwable t) {
-                    // Handle failure case
-                    Toast.makeText(ContactsActivity.context, "Server on Room did not respond!!!!!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }catch (Exception e){
-            System.out.println(e);
-        }
-
+            @Override
+            public void onFailure(Call<List<Chat>> call, Throwable t) {
+                // Handle failure case
+                Toast.makeText(ContactsActivity.context, "Server on Room did not respond!!!!!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public CompletableFuture<Boolean> createChat(String token, User otherUser)  {
@@ -96,7 +84,7 @@ public class ServerDao {
 
         return future;
     }
-    public CompletableFuture<Boolean> deleteChat(String chatID)  {
+    public CompletableFuture<Boolean> deleteChat(int chatID)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Chat> call = this.chat.deleteChat(chatID);
@@ -126,7 +114,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> getChat(String token, String chatID)  {
+    public CompletableFuture<Boolean> getChat(String token, int chatID)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Chat> call = this.chat.getChat(chatID,token);
@@ -156,7 +144,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> getMessages(String token, String chatID,List<Message> messages,Context chat)  {
+    public CompletableFuture<Boolean> getMessages(String token, int chatID,List<Message> messages,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<List<Message>> call = this.chat.getMessages(chatID,token);
@@ -187,7 +175,7 @@ public class ServerDao {
         return future;
     }
 
-    public CompletableFuture<Boolean> sendMessage(String token, String chatID,Message msg)  {
+    public CompletableFuture<Boolean> sendMessage(String token, int chatID,Message msg,Context chat)  {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         Call<Message> call = this.chat.postMessege(chatID,msg,token);
@@ -208,6 +196,7 @@ public class ServerDao {
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
+                Toast.makeText(chat, "Server did not respond", Toast.LENGTH_SHORT).show();
                 future.complete(false);
             }
         });

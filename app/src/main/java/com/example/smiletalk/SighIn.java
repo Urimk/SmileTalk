@@ -104,7 +104,7 @@ public class SighIn extends DarkAppCompact {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         context = getApplicationContext();
-        server = new Server();
+        server = new Server(context);
         //initilize the default profilePic
         ImageView img = findViewById(R.id.chosenPictureImageView);
         selectedImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.smiletalklogo);
