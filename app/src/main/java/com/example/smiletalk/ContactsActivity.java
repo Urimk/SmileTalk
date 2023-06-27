@@ -55,6 +55,13 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
+        @Override
+        public void onBackPressed() {
+            // Disable the back button functionality
+            // Remove the following line if you want to enable the back button
+            // super.onBackPressed();
+        }
+
 
         // Check if the database exists
         if (!databaseExists()) {
