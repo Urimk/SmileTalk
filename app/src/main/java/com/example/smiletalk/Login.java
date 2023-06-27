@@ -1,17 +1,3 @@
-package com.example.smiletalk;
-
-import static androidx.core.content.ContextCompat.startActivity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.Intent;
-
-import android.os.Bundle;
-
-import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.TextView;
@@ -26,15 +12,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Login extends AppCompatActivity {
+public class Login extends DarkAppCompact {
     private Server server;
     public static User curUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        server = new Server();
-
+        Context context = getApplicationContext();
+        server = new Server(context);
         Button loginInBottom = findViewById(R.id.loginBottom);
         loginInBottom.setOnClickListener(
                 view -> {

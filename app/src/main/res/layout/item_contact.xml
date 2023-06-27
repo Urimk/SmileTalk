@@ -5,7 +5,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="24dp"
-    android:background="@android:color/transparent ">
+    android:background="@android:color/transparent">
 
     <ImageView
         android:id="@+id/avatarImageView"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/normalTxt"
             android:fontFamily="@font/poppins_bold"
             android:paddingTop="5dp"
             android:paddingBottom="2dp"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/gray"
+            android:textColor="?attr/bigText"
             android:layout_alignParentEnd="true"
             android:layout_alignBaseline="@id/nameTextView"
             android:fontFamily="@font/poppins_regular" />

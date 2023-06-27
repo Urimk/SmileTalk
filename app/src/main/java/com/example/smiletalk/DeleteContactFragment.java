@@ -9,7 +9,7 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 
-public class DeleteContactFragment extends Fragment {
+public class DeleteContactFragment extends DarkFragment {
 
     private int contactIndex;
     private DeleteContactListener deleteContactListener;

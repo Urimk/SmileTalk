@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AddContactFragment extends Fragment {
+public class AddContactFragment extends DarkFragment {
 
     private EditText usernameEditText;
     private AddContactListener addContactListener;

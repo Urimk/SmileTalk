@@ -14,7 +14,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/background"/>
 
     <TextView
         android:id="@+id/timestampTextView"
@@ -23,7 +23,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="-4dp"
         android:alpha="0.4"
-        android:backgroundTint="@color/gray"
+        android:textColor="?attr/bigText"
         android:fontFamily="@font/poppins_regular"
         android:textSize="10sp" />
 

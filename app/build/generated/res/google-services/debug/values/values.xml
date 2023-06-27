@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">175458392376-ivc3nfju89c2fu4rkm82s1enim53kp2n.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">175458392376</string>
+    <string name="google_api_key" translatable="false">AIzaSyBdZEk1pCGhhHsXKJd7-qFHvr8f_pvdXzM</string>
+    <string name="google_app_id" translatable="false">1:175458392376:android:01a2c9cf3916e8b25d09cd</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBdZEk1pCGhhHsXKJd7-qFHvr8f_pvdXzM</string>
+    <string name="google_storage_bucket" translatable="false">smiletalk-62fd7.appspot.com</string>
+    <string name="project_id" translatable="false">smiletalk-62fd7</string>
+</resources>

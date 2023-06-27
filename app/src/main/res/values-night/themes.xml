@@ -1,7 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SmileTalk" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="DarkTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="primary">@color/dm_light_blue</item>
+        <item name="bigText">@color/dm_gray</item>
+        <item name="attention">@color/dm_red</item>
+        <item name="background">@color/almost_black</item>
+        <item name="normalTxt">@color/white</item>
+        <item name="secondary">@color/blue</item>
+        <item name="signInPic">@drawable/dark_background</item>
+
     </style>
+
 </resources>

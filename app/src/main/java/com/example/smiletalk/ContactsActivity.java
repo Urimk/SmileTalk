@@ -1,6 +1,7 @@
 package com.example.smiletalk;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ContactsActivity extends AppCompatActivity implements AddContactListener, DeleteContactListener  {
+public class ContactsActivity extends DarkAppCompact implements AddContactListener, DeleteContactListener  {
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;
@@ -48,13 +50,14 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        // Prepare data
-        User a = new User("a","11","a","11");
-        a.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODc1MDUzOTF9.KeoQ1_dwh3-01pR70Th3h-ooqzbdlomQHT8AuIwV0dY");
-        User b = new User("b","11","a","11");
-        User c = new User("c","11","a","11");
-        //curUser = Login.curUser;
-        curUser = a;
+        @Override
+        public void onBackPressed() {
+            // Disable the back button functionality
+            // Remove the following line if you want to enable the back button
+            // super.onBackPressed();
+        }
+
+
         new Thread(() -> {
             viewModel.getUserChats(curUser.getUsername());
             contactList = viewModel.get().getValue();
@@ -95,14 +98,46 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
             }
         });
 
+        Button logoutButton = findViewById(R.id.actionButton);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLogoutDialog();
+            }
+        });
+
     }
+
+    public void showLogoutDialog() {
+        Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
+        Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+        Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
+
+        if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
+            LogoutFragment fragment = new LogoutFragment();
+            // Pass the index of the item to the fragment
+
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, fragment, "LogoutFragment")
+                    .addToBackStack(null)
+                    .commit();
+
+            findViewById(R.id.grayOutOverlay).setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     public void showDeleteContactDialog(int position) {
         // Check if the AddContactFragment is already added
         Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
         Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+        Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
 
-        if (addContactFragment == null && deleteContactFragment == null) {
+        if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
             // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding DeleteContactFragment
             DeleteContactFragment fragment = new DeleteContactFragment(position);
             // Pass the index of the item to the fragment
@@ -157,7 +192,7 @@ public class ContactsActivity extends AppCompatActivity implements AddContactLis
         // Hide the overlay
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
-    @Override
+        @Override
     protected void onResume() {
         super.onResume();
         // Set the updated adapter to the RecyclerView

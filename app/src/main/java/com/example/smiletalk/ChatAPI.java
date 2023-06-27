@@ -15,7 +15,7 @@ public interface ChatAPI {
     Call<List<Chat>> getChats(@Header("Authorization") String authorization);
 
     @GET("Chats/{id}")
-    Call<Chat> getChat(@Path("id") String id,@Header("Authorization") String authorization);
+    Call<Chat> getChat(@Path("id") int id,@Header("Authorization") String authorization);
 
     @GET("Chats/{id}/Messages")
     Call<List<Message>> getMessages(@Path("id") String id,@Header("Authorization") String authorization);
