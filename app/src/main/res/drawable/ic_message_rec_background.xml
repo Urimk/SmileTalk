@@ -2,11 +2,11 @@
     <gradient
         android:startColor="@color/light_blue"
         android:endColor="@color/purple_blue"
-        android:angle="222" />
+        android:angle="225" />
     <corners
         android:radius="30dp"
-        android:topLeftRadius="30dp"
+        android:topLeftRadius="2dp"
         android:topRightRadius="30dp"
         android:bottomLeftRadius="30dp"
-        android:bottomRightRadius="2dp" />
+        android:bottomRightRadius="30dp" />
 </shape>

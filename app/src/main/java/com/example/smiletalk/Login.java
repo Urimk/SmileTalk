@@ -1,3 +1,17 @@
+package com.example.smiletalk;
+
+import static androidx.core.content.ContextCompat.startActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+
+import android.os.Bundle;
+
+import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.TextView;
