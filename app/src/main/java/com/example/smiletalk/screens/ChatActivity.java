@@ -203,17 +203,18 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
     }
 
-    public static void refresh(){
-      List<Chat> chats =  ContactsActivity.viewModel.get().getValue();
-      Chat chat = null;
-      for(Chat c : chats){
-          if(c.getId() == ContactAdapter.curChat.getId()){
-              chat = c;
-              break;
-          }
-      }
-      if(chat == null)
-          return;
+    public static void refresh() {
+        List<Chat> chats = ContactsActivity.viewModel.get().getValue();
+        Chat chat = null;
+        for (Chat c : chats) {
+            if (c.getId() == ContactAdapter.curChat.getId()) {
+                chat = c;
+                break;
+            }
+        }
+        if (chat == null){
+            return;
+    }
         messageList = chat.getMessages();
         messageAdapter.setMessageList(messageList);
         messageAdapter.notifyDataSetChanged();
