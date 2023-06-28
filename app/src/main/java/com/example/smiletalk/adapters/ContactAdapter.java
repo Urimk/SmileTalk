@@ -22,6 +22,7 @@ import com.example.smiletalk.screens.ChatActivity;
 import com.example.smiletalk.screens.DeleteContactListener;
 import com.example.smiletalk.screens.Login;
 
+import java.util.ArrayList;
 import java.util.List;
 
 

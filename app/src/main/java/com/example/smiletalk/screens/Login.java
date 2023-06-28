@@ -50,28 +50,7 @@ public class Login extends DarkAppCompact {
                         server.loginUser(user, this).thenAccept(res -> {
                             if (res) {
                                 // Handle the true value
-                                FirebaseMessaging.getInstance().getToken()
-                                        .addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()) {
-                                                // Get new FCM registration token
-                                                String token = task.getResult();
-                                                server.sendToken(username, token).thenAccept(ans ->{
-                                                    String exception;
-                                                    if(ans)
-                                                        getUser(user,this);
-                                                    else
-                                                        Log.w("Fetching FCM registration token failed",
-                                                                "failed sending token");
-                                                });
-                                            } else {
-                                                // Log the error and handle it
-                                                Exception exception = task.getException();
-                                                if (exception != null) {
-                                                    Log.w("Fetching FCM registration token failed", exception);
-                                                }
-                                                // Handle the error case
-                                            }
-                                        });
+                                getUser(user,this);
                             }else{
                                 usernameLable.setError("Incorrect userName or password");
                             }
