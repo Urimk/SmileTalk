@@ -87,10 +87,11 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
             // Check if the AddContactFragment is already added
             Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");
             Fragment deleteContactFragment = getSupportFragmentManager().findFragmentByTag("DeleteContactFragment");
+            Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
 
-            if (addContactFragment == null && deleteContactFragment == null) {
+            if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
                 // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding AddContactFragment
-
+                adapter.setClickable(false);
                 AddContactFragment fragment = new AddContactFragment(curUser, contactList, viewModel);
                 fragment.setAddContactListener(ContactsActivity.this);
 
@@ -123,6 +124,7 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         Fragment logoutFragment = getSupportFragmentManager().findFragmentByTag("LogoutFragment");
 
         if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
+            adapter.setClickable(false);
             LogoutFragment fragment = new LogoutFragment();
             // Pass the index of the item to the fragment
 
@@ -147,6 +149,7 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
 
         if (addContactFragment == null && deleteContactFragment == null && logoutFragment == null) {
             // Neither AddContactFragment nor DeleteContactFragment is added, proceed with adding DeleteContactFragment
+            adapter.setClickable(false);
             DeleteContactFragment fragment = new DeleteContactFragment(position);
             // Pass the index of the item to the fragment
             Bundle args = new Bundle();
@@ -176,10 +179,14 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         viewModel.delete(curUser.getToken(),reChat);
         adapter.notifyItemRemoved(position);
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+        adapter.setClickable(true);
+
     }
 
     public void onContactDeleteCanceled() {
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+        adapter.setClickable(true);
+
     }
 
 
@@ -188,6 +195,8 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
     public void onBackPressed() {
         super.onBackPressed();
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+        adapter.setClickable(true);
+
     }
 
 
@@ -199,6 +208,8 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
 
         // Hide the overlay
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+        adapter.setClickable(true);
+
     }
         @Override
     protected void onResume() {

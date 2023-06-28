@@ -62,7 +62,7 @@ public class Server {
 
         // Create Retrofit instance with the OkHttpClient
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + ipAddress + ":5000/api/")
+                .baseUrl("http://" + ipAddress + "/api/")
                 .client(httpClient) // Set the OkHttpClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

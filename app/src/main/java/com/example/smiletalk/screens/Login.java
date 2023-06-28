@@ -1,7 +1,5 @@
 package com.example.smiletalk.screens;
 
-import static com.example.smiletalk.notifications.NotificationUtils.createNotificationChannel;
-
 import androidx.annotation.NonNull;
 
 import android.content.Context;
@@ -38,7 +36,6 @@ public class Login extends DarkAppCompact {
 
         Context context = getApplicationContext();
         server = new Server(context);
-        createNotificationChannel(this);
 
         Button loginInBottom = findViewById(R.id.loginBottom);
         loginInBottom.setOnClickListener(
