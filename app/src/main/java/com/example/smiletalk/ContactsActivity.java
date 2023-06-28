@@ -61,14 +61,6 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         rvContacts = findViewById(R.id.rvContacts);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        @Override
-        public void onBackPressed() {
-            // Disable the back button functionality
-            // Remove the following line if you want to enable the back button
-            // super.onBackPressed();
-        }
-
-
         // Prepare data
         curUser = Login.curUser;
         new Thread(() -> {
@@ -121,6 +113,8 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         });
 
     }
+
+
 
     public void showLogoutDialog() {
         Fragment addContactFragment = getSupportFragmentManager().findFragmentByTag("AddContactFragment");

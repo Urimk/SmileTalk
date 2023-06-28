@@ -47,7 +47,7 @@ public class Server {
 
     public Server(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsActivity.DARK_MODE_KEY, Context.MODE_PRIVATE);
-        String ipAddress = sharedPreferences.getString(SettingsActivity.IP_ADDRESS_KEY, "");
+        String ipAddress = sharedPreferences.getString(SettingsActivity.IP_ADDRESS_KEY, "10.0.2.2");
         // Create an instance of HttpLoggingInterceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

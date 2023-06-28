@@ -53,7 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.timestampTextView.setText(message.getTime());
 
         // You can customize the gravity of the messageTextView based on the sender
-        if (message.getSender().getUserName().equals(curUser)) {
+        if (message.getSender().getUsername().equals(curUser)) {
             holder.messageTextView.setGravity(Gravity.END);
         } else {
             holder.messageTextView.setGravity(Gravity.START);
@@ -72,7 +72,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             return 0;
         } else {
             Message message = messageList.get(position - 1); // Adjusted position to exclude the first message
-            if (message.getSender().getUserName().equals(curUser)) {
+            if (message.getSender().getUsername().equals(curUser)) {
                 return 1; // Sent message
             } else {
                 return 2; // Received message

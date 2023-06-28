@@ -40,6 +40,7 @@
       android:textColor="@color/white"
       android:layout_margin="10dp"
       android:padding="20dp"
+      android:drawableLeft="@drawable/person"
       />
 
   <!-- Button for adding Profile Picture -->
@@ -70,7 +71,9 @@
       android:layout_width="183dp"
       android:layout_height="146dp"
       android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"/>
+      android:layout_centerVertical="true"
+      android:src="@drawable/smiletalklogo"
+      />
 
   <!-- Textview for the hyperlink -->
   <Button

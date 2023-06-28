@@ -47,17 +47,13 @@ public final class ChatDao_Impl implements ChatDao {
         final String _tmp = UserListConverter.fromArrayList(value.getUsers());
         if (_tmp == null) {
           stmt.bindNull(2);
-          stmt.bindNull(2);
         } else {
-          stmt.bindString(2, _tmp);
           stmt.bindString(2, _tmp);
         }
         final String _tmp_1 = MessageListConverter.fromArrayList(value.getMessages());
         if (_tmp_1 == null) {
           stmt.bindNull(3);
-          stmt.bindNull(3);
         } else {
-          stmt.bindString(3, _tmp_1);
           stmt.bindString(3, _tmp_1);
         }
       }
@@ -65,7 +61,6 @@ public final class ChatDao_Impl implements ChatDao {
     this.__deletionAdapterOfChat = new EntityDeletionOrUpdateAdapter<Chat>(__db) {
       @Override
       public String createQuery() {
-        return "DELETE FROM `chats` WHERE `id` = ?";
         return "DELETE FROM `chats` WHERE `id` = ?";
       }
 
@@ -82,7 +77,6 @@ public final class ChatDao_Impl implements ChatDao {
       @Override
       public String createQuery() {
         return "UPDATE OR ABORT `chats` SET `id` = ?,`users` = ?,`messages` = ? WHERE `id` = ?";
-        return "UPDATE OR ABORT `chats` SET `id` = ?,`users` = ?,`messages` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -95,9 +89,7 @@ public final class ChatDao_Impl implements ChatDao {
         final String _tmp = UserListConverter.fromArrayList(value.getUsers());
         if (_tmp == null) {
           stmt.bindNull(2);
-          stmt.bindNull(2);
         } else {
-          stmt.bindString(2, _tmp);
           stmt.bindString(2, _tmp);
         }
         final String _tmp_1 = MessageListConverter.fromArrayList(value.getMessages());

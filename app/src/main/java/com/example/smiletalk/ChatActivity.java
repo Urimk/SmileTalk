@@ -69,7 +69,7 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         submitButton = findViewById(R.id.submitButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         messageList = curChat.getMessages();
-        messageAdapter = new MessageAdapter(messageList, curUsername);
+        messageAdapter = new MessageAdapter(messageList, curUser.getUsername());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(layoutManager);
         messageRecyclerView.setAdapter(messageAdapter);
