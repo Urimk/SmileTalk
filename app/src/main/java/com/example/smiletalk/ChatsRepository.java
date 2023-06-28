@@ -1,5 +1,7 @@
 package com.example.smiletalk;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
@@ -85,7 +87,4 @@ public class ChatsRepository {
         }
 
     }
-
-
-
 }

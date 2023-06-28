@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bigText" format="reference" />
+    <attr name="secondary" format="reference" />
+    <attr name="primary" format="reference" />
+    <attr name="attention" format="reference"/>
+    <attr name="background" format="reference"/>
+    <attr name="normalTxt" format="reference"/>
+    <attr name="signInPic" format="reference"/>
+</resources>

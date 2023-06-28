@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Base64;
@@ -29,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ChatActivity extends AppCompatActivity implements DeleteContactListener {
+public class ChatActivity extends DarkAppCompact implements DeleteContactListener {
 
     private ImageView avatarImageView;
     private TextView nameTextView;
@@ -68,7 +69,7 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
         submitButton = findViewById(R.id.submitButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
         messageList = curChat.getMessages();
-        messageAdapter = new MessageAdapter(messageList);
+        messageAdapter = new MessageAdapter(messageList, curUsername);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(layoutManager);
         messageRecyclerView.setAdapter(messageAdapter);
@@ -101,6 +102,14 @@ public class ChatActivity extends AppCompatActivity implements DeleteContactList
                 viewModelChat.sendMessage(curUser.getToken(),curUser.getUsername(),message,curChat.getId());
                 addMessageToScrollView(message);
                 messageEditText.getText().clear();
+            }
+        });
+
+        ImageView backBtn = findViewById(R.id.backIcon);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

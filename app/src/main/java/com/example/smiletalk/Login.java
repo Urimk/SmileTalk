@@ -35,14 +35,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Login extends AppCompatActivity {
+public class Login extends DarkAppCompact {
     private Server server;
     public static User curUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        server = new Server();
+
+        Context context = getApplicationContext();
+        server = new Server(context);
         createNotificationChannel(this);
 
         Button loginInBottom = findViewById(R.id.loginBottom);

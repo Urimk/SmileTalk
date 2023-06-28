@@ -144,6 +144,18 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="imagePath" value="C:\Users\user1\Desktop\back-arrow.png" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="text">
                                         <value>
                                           <PersistentState>
@@ -170,8 +182,13 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="imageAsset" value="C:\Users\user1\Desktop\back-arrow.png" />
+                                      <entry key="outputName" value="back_icon" />
                                       <entry key="backgroundColor" value="f3f2f2" />
                                       <entry key="outputName" value="ic_baseline_notifications_active_24" />
+
                                     </map>
                                   </option>
                                 </PersistentState>

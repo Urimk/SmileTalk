@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="Add new contact:"
             android:fontFamily="@font/poppins_bold"
-            android:textColor="@color/gray"
+            android:textColor="?attr/bigText"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
                 android:inputType="text"
                 android:hint="Username"
                 android:background="@android:color/transparent"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/background"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
 

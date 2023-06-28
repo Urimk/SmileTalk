@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/background"
         tools:context=".ContactsActivity">
 
         <TextView
@@ -21,39 +22,43 @@
             android:text="Contacts"
             android:textColor="@color/gray"
             android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/settingsIcon"
-            app:layout_constraintHorizontal_bias="0.565"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/settingsIcon"
-            android:layout_width="41dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="8dp"
-            android:src="@mipmap/settings"
-            app:layout_constraintBottom_toBottomOf="@id/messagesTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/messagesTitle" />
+        <Button
+            android:id="@+id/actionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="?attr/attention"
+            android:padding="6dp"
+            android:text="Logout"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/messagesTitle"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvContacts"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/messagesTitle"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/fab" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginEnd="244dp"
+            android:layout_marginBottom="500dp"
             android:src="@drawable/ic_add"
-            app:backgroundTint="@color/extra_light_blue"
+            app:backgroundTint="?attr/secondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
@@ -68,3 +73,5 @@
         android:visibility="gone" />
 
 </FrameLayout>
+
+

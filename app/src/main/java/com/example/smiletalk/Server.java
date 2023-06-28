@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,7 +45,9 @@ public class Server {
     }
 
 
-    public Server() {
+    public Server(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsActivity.DARK_MODE_KEY, Context.MODE_PRIVATE);
+        String ipAddress = sharedPreferences.getString(SettingsActivity.IP_ADDRESS_KEY, "");
         // Create an instance of HttpLoggingInterceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -57,11 +60,10 @@ public class Server {
 
         // Create Retrofit instance with the OkHttpClient
         retrofit = new Retrofit.Builder()
-                .baseUrl(BaseUrl.ip)
+                .baseUrl("http://" + ipAddress + "/")
                 .client(httpClient) // Set the OkHttpClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         user = retrofit.create(UserAPI.class);
         chat = retrofit.create(ChatAPI.class);
         token = retrofit.create(TokenAPI.class);

@@ -7,5 +7,5 @@
     android:gravity="center"
     android:layout_gravity="center"
     android:text="-----     The beginning of the chat     -----"
-    android:textColor="@color/gray"
+    android:textColor="?attr/bigText"
     android:textSize="14sp" />
