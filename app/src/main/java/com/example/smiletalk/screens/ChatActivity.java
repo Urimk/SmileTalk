@@ -28,6 +28,7 @@ import com.example.smiletalk.viewModel.ViewModelChat;
 import com.example.smiletalk.entities.Chat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,15 +58,35 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         setContentView(R.layout.chat);
         context = getApplicationContext();
         User curUser = Login.curUser;
-        String contactName = curUser.getUsername();
-        String pic = curUser.getProfilePic();
-
         Chat curChat = ContactAdapter.curChat;
+        ArrayList<User> users = curChat.getUsers();
+        User otherUser = users.get(0);
+        if(otherUser.getUsername().equals(curUser.getUsername()))
+            otherUser = users.get(1);
+        String pic = otherUser.getProfilePic();
+        Bitmap picProf = decodeBase64(pic);
+        String contactName = otherUser.getUsername();
 
 
         // Initialize views
         viewModelChat =  new ViewModelProvider(this).get(ViewModelChat.class);
-        avatarImageView = findViewById(R.id.avatarImageView);
+        if (picProf != null) {
+            int maxWidth = avatarImageView.getMaxWidth();
+            int maxHeight = avatarImageView.getMaxHeight();
+
+            int imageWidth = picProf.getWidth();
+            int imageHeight = picProf.getHeight();
+
+            if (imageWidth <= maxWidth && imageHeight <= maxHeight) {
+                avatarImageView.setImageBitmap(picProf);
+            } else {
+                // Image is too large, handle the case accordingly
+                avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
+            }
+        } else {
+            avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
+        }
+
         nameTextView = findViewById(R.id.nameTextView);
         deleteChatButton = findViewById(R.id.actionButton);
         messageEditText = findViewById(R.id.messageEditText);
@@ -147,7 +168,7 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         return true;
     }
     private Bitmap decodeBase64(String base64String) {
-        if (base64String != null && isValidBase64(base64String)) {
+        if (base64String != null) { // && isValidBase64(base64String)
             try {
                 byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
                 return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);

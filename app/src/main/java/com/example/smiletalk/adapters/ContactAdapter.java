@@ -89,53 +89,61 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         }
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the clicked contact
-                int clickedPosition = holder.getAdapterPosition();
-                Chat clickedContact = contactList.get(clickedPosition);
+        holder.itemView.setOnClickListener(view -> {
+            // Get the clicked contact
+            int clickedPosition = holder.getAdapterPosition();
+            Chat clickedContact = contactList.get(clickedPosition);
 
-                // Find the other user's userName
-                User otherUser = null;
-                for (User user : clickedContact.getUsers()) {
-                    if (!user.getUsername().equals(curUser.getUsername())) {
-                        otherUser = user;
-                        break;
-                    }
+            // Find the other user's userName
+            User otherUser1 = null;
+            for (User user : clickedContact.getUsers()) {
+                if (!user.getUsername().equals(curUser.getUsername())) {
+                    otherUser1 = user;
+                    break;
                 }
-
-                // Create an intent to start the ChatActivity
-                Intent intent = new Intent(context, ChatActivity.class);
-                Login.curUser = curUser;
-                curChat = contactList.get(clickedPosition);
-                context.startActivity(intent);
             }
+
+            // Create an intent to start the ChatActivity
+            Intent intent = new Intent(context, ChatActivity.class);
+            Login.curUser = curUser;
+            curChat = contactList.get(clickedPosition);
+            context.startActivity(intent);
         });
 
 
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (deleteContactListener != null) {
-                    int clickedPosition = holder.getAdapterPosition();
-                    deleteContactListener.showDeleteContactDialog(clickedPosition);
-                    return true; // Consume the long click event
-                }
-                return false; // Continue with regular click event handling
+        holder.itemView.setOnLongClickListener(view -> {
+            if (deleteContactListener != null) {
+                int clickedPosition = holder.getAdapterPosition();
+                deleteContactListener.showDeleteContactDialog(clickedPosition);
+                return true; // Consume the long click event
             }
+            return false; // Continue with regular click event handling
         });
 
         holder.nameTextView.setText(otherUser.getUsername());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
         if (bitmap != null) {
-            holder.avatarImageView.setImageBitmap(bitmap);
+            if (isImageSizeValid(bitmap,holder)) {
+                holder.avatarImageView.setImageBitmap(bitmap);
+            } else {
+                holder.avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
+            }
         } else {
             holder.avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
         }
         holder.messageTextView.setText("Hello");
         holder.timestampTextView.setText("16.06.23 : 08:16:00");
+    }
+
+    private boolean isImageSizeValid(Bitmap bitmap,ContactViewHolder holder) {
+        int maxWidth = holder.avatarImageView.getMaxWidth();
+        int maxHeight = holder.avatarImageView.getMaxHeight();
+
+        int imageWidth = bitmap.getWidth();
+        int imageHeight = bitmap.getHeight();
+
+        return (imageWidth <= maxWidth && imageHeight <= maxHeight);
     }
 
 
@@ -166,7 +174,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
 
     private Bitmap decodeBase64(String base64String) {
-        if (base64String != null && isValidBase64(base64String)) {
+        if (base64String != null ) { //&& isValidBase64(base64String)
             try {
                 byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
                 return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);

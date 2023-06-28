@@ -51,13 +51,6 @@ public class ServerChat {
                     chatListData.postValue(index(username));
                     List<Chat> chats = response.body();
                     chatListData.postValue(chats);
-                    for (Chat c: chats) {
-                        ArrayList<User> users = c.getUsers();
-                        for (User u: users) {
-                            u.savePathImage();
-                        }
-
-                    }
                     for(Chat c : chats){
                         insert(c);
                     }
