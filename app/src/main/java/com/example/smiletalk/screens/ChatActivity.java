@@ -56,9 +56,10 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         context = getApplicationContext();
-        String contactName = getIntent().getStringExtra("contactName");
-        String pic = getIntent().getStringExtra("contactPic");
-        User curUser = (User)getIntent().getSerializableExtra("curUser");
+        User curUser = Login.curUser;
+        String contactName = curUser.getUsername();
+        String pic = curUser.getProfilePic();
+
         Chat curChat = ContactAdapter.curChat;
 
 

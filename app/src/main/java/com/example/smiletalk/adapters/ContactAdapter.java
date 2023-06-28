@@ -19,6 +19,7 @@ import com.example.smiletalk.entities.User;
 import com.example.smiletalk.entities.Chat;
 import com.example.smiletalk.screens.ChatActivity;
 import com.example.smiletalk.screens.DeleteContactListener;
+import com.example.smiletalk.screens.Login;
 
 import java.util.List;
 
@@ -106,9 +107,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
                 // Create an intent to start the ChatActivity
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("curUser", curUser);
-                intent.putExtra("contactName", otherUser.getUsername());
-                intent.putExtra("contactPic", otherUser.getProfilePic());
+                Login.curUser = curUser;
                 curChat = contactList.get(clickedPosition);
                 context.startActivity(intent);
             }
