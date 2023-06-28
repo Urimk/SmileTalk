@@ -7,7 +7,36 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:175458392376:android:01a2c9cf3916e8b25d09cd",
+        "mobilesdk_app_id": "1:175458392376:android:07046d4ffaa3e4495d09cd",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175458392376-ivc3nfju89c2fu4rkm82s1enim53kp2n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdZEk1pCGhhHsXKJd7-qFHvr8f_pvdXzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175458392376-ivc3nfju89c2fu4rkm82s1enim53kp2n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175458392376:android:9e093e43a0154e0d5d09cd",
         "android_client_info": {
           "package_name": "com.example.smiletalk"
         }

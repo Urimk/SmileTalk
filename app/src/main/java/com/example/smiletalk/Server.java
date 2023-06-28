@@ -56,6 +56,7 @@ public class Server {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.addInterceptor(loggingInterceptor);
         OkHttpClient httpClient = httpClientBuilder.build();
+        BaseUrl.changeIp("192.168.43.169");
 
         // Create Retrofit instance with the OkHttpClient
         retrofit = new Retrofit.Builder()
@@ -63,7 +64,6 @@ public class Server {
                 .client(httpClient) // Set the OkHttpClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         user = retrofit.create(UserAPI.class);
         chat = retrofit.create(ChatAPI.class);
         token = retrofit.create(TokenAPI.class);
@@ -129,8 +129,26 @@ public class Server {
     }
 
 
+    public CompletableFuture<Boolean> sendToken(String username, String token) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
+        Call<User> call = this.user.sendToken(new TokenRequest(username,token));
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, @NonNull Response<User> response) {
+                if (response.isSuccessful()) {
+                    future.complete(true);
+                } else {
+                    future.complete(false);
+                }
+            }
 
-
-
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("Sign", "firebase API call failed: " + t.getMessage());
+                future.complete(false);
+            }
+        });
+        return future;
+    }
 }

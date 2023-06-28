@@ -2,12 +2,18 @@ package com.example.smiletalk;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import static com.example.smiletalk.NotificationUtils.CHANNEL_ID;
+import static com.example.smiletalk.NotificationUtils.createNotificationChannel;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -17,6 +23,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.util.concurrent.CompletableFuture;
@@ -33,8 +42,11 @@ public class Login extends DarkAppCompact {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         Context context = getApplicationContext();
         server = new Server(context);
+        createNotificationChannel(this);
+
         Button loginInBottom = findViewById(R.id.loginBottom);
         loginInBottom.setOnClickListener(
                 view -> {
@@ -48,8 +60,28 @@ public class Login extends DarkAppCompact {
                         server.loginUser(user, this).thenAccept(res -> {
                             if (res) {
                                 // Handle the true value
-
-                                getUser(user,this);
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                // Get new FCM registration token
+                                                String token = task.getResult();
+                                                server.sendToken(username, token).thenAccept(ans ->{
+                                                    String exception;
+                                                    if(ans)
+                                                        getUser(user,this);
+                                                    else
+                                                        Log.w("Fetching FCM registration token failed",
+                                                                "failed sending token");
+                                                });
+                                            } else {
+                                                // Log the error and handle it
+                                                Exception exception = task.getException();
+                                                if (exception != null) {
+                                                    Log.w("Fetching FCM registration token failed", exception);
+                                                }
+                                                // Handle the error case
+                                            }
+                                        });
                             }else{
                                 usernameLable.setError("Incorrect userName or password");
                             }

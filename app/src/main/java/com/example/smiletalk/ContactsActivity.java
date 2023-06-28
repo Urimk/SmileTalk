@@ -21,13 +21,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class ContactsActivity extends DarkAppCompact implements AddContactListener, DeleteContactListener  {
 
+
     private RecyclerView rvContacts;
-    private ContactAdapter adapter;
-    private ViewModelChat viewModel;
+    private static ContactAdapter adapter;
+    public static ViewModelChat viewModel;
     public static Context context;
-    private User curUser;
+
+    public static User getCurUser() {
+        return curUser;
+    }
+
+    public void setCurUser(User curUser) {
+        this.curUser = curUser;
+    }
+
+    private static User curUser;
 
     private List<Chat> contactList;
 
@@ -58,6 +69,8 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         }
 
 
+        // Prepare data
+        curUser = Login.curUser;
         new Thread(() -> {
             viewModel.getUserChats(curUser.getUsername());
             contactList = viewModel.get().getValue();
@@ -198,4 +211,14 @@ public class ContactsActivity extends DarkAppCompact implements AddContactListen
         // Set the updated adapter to the RecyclerView
         rvContacts.setAdapter(adapter);
     }
+
+    public static void refresh(){
+        User u = getCurUser();
+        if(u != null){
+          viewModel.reload(curUser.getToken(),curUser.getUsername());
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+
 }

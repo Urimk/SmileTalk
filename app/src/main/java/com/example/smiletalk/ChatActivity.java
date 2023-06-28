@@ -37,9 +37,9 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
     private Button deleteChatButton;
     private EditText messageEditText;
     private ImageButton submitButton;
-    private RecyclerView messageRecyclerView;
-    private MessageAdapter messageAdapter;
-    private List<Message> messageList;
+    private static RecyclerView messageRecyclerView;
+    private static MessageAdapter messageAdapter;
+    private static List<Message> messageList;
     private ViewModelChat viewModelChat;
 
     //may not be needed
@@ -95,16 +95,13 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         });
 
         // Set submit button click listener
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        submitButton.setOnClickListener(view -> {
 
-                Message message = new Message(curUser, getCurrentTimestamp(), messageEditText.getText().toString().trim());
-                if (message != null) {
-                    viewModelChat.sendMessage(curUser.getToken(),curUser.getUsername(),message,curChat.getId());
-                    addMessageToScrollView(message);
-                    messageEditText.getText().clear();
-                }
+            Message message = new Message(curUser, getCurrentTimestamp(), messageEditText.getText().toString().trim());
+            if (message != null) {
+                viewModelChat.sendMessage(curUser.getToken(),curUser.getUsername(),message,curChat.getId());
+                addMessageToScrollView(message);
+                messageEditText.getText().clear();
             }
         });
 
@@ -193,6 +190,29 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
 
     public void onContactDeleteCanceled() {
         findViewById(R.id.grayOutOverlay).setVisibility(View.GONE);
+    }
+
+    public static void refresh(){
+      List<Chat> chats =  ContactsActivity.viewModel.get().getValue();
+      Chat chat = null;
+      for(Chat c : chats){
+          if(c.getId() == ContactAdapter.curChat.getId()){
+              chat = c;
+              break;
+          }
+      }
+      if(chat == null)
+          return;
+        messageList = chat.getMessages();
+        messageAdapter.setMessageList(messageList);
+        messageAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set the updated adapter to the RecyclerView
+        messageRecyclerView.setAdapter(messageAdapter);
     }
 }
 

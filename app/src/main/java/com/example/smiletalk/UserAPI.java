@@ -15,4 +15,7 @@ public interface UserAPI {
 
     @POST("Users")
     Call<User> createUser(@Body User user);
+
+    @POST("Users/firebase")
+    Call<User> sendToken(@Body TokenRequest tokenRequest);
 }
