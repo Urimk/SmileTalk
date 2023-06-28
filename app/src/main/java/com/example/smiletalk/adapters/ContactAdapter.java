@@ -28,6 +28,9 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
     public static Chat curChat;
+
+    private boolean clickable = true;
+
     public List<Chat> getContactList() {
         return contactList;
     }
@@ -67,7 +70,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         this.contactList = contactList;
         this.curUser = curUser;
         this.deleteContactListener = deleteContactListener;
+        this.clickable = true;
     }
+
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
+        notifyDataSetChanged();
+    }
+
 
 
 
@@ -90,38 +100,42 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             }
         }
 
-
-        holder.itemView.setOnClickListener(view -> {
-            // Get the clicked contact
-            int clickedPosition = holder.getAdapterPosition();
-            Chat clickedContact = contactList.get(clickedPosition);
-
-            // Find the other user's userName
-            User otherUser1 = null;
-            for (User user : clickedContact.getUsers()) {
-                if (!user.getUsername().equals(curUser.getUsername())) {
-                    otherUser1 = user;
-                    break;
-                }
-            }
-
-            // Create an intent to start the ChatActivity
-            Intent intent = new Intent(context, ChatActivity.class);
-            Login.curUser = curUser;
-            curChat = contactList.get(clickedPosition);
-            context.startActivity(intent);
-        });
-
-
-
-        holder.itemView.setOnLongClickListener(view -> {
-            if (deleteContactListener != null) {
+        if (clickable) {
+            holder.itemView.setOnClickListener(view -> {
+                // Get the clicked contact
                 int clickedPosition = holder.getAdapterPosition();
-                deleteContactListener.showDeleteContactDialog(clickedPosition);
-                return true; // Consume the long click event
-            }
-            return false; // Continue with regular click event handling
-        });
+                Chat clickedContact = contactList.get(clickedPosition);
+
+                // Find the other user's userName
+                User otherUser1 = null;
+                for (User user : clickedContact.getUsers()) {
+                    if (!user.getUsername().equals(curUser.getUsername())) {
+                        otherUser1 = user;
+                        break;
+                    }
+                }
+
+                // Create an intent to start the ChatActivity
+                Intent intent = new Intent(context, ChatActivity.class);
+                Login.curUser = curUser;
+                curChat = contactList.get(clickedPosition);
+                context.startActivity(intent);
+            });
+
+            holder.itemView.setOnLongClickListener(view -> {
+                if (deleteContactListener != null) {
+                    int clickedPosition = holder.getAdapterPosition();
+                    deleteContactListener.showDeleteContactDialog(clickedPosition);
+                    return true; // Consume the long click event
+                }
+                return false; // Continue with regular click event handling
+            });
+        } else {
+            // Disable click events
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setOnLongClickListener(null);
+        }
+
 
         holder.nameTextView.setText(otherUser.getUsername());
         Bitmap bitmap = decodeBase64(otherUser.getProfilePic());
@@ -134,8 +148,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         } else {
             holder.avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
         }
-        holder.messageTextView.setText("Hello");
-        holder.timestampTextView.setText("16.06.23 : 08:16:00");
+        Message lastMessage = chat.getMessages().get(chat.getMessages().size() - 1);
+        holder.messageTextView.setText(lastMessage.getContent());
+        holder.timestampTextView.setText(lastMessage.getTime());
     }
 
     private boolean isImageSizeValid(Bitmap bitmap,ContactViewHolder holder) {
