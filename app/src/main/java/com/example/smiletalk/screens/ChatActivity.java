@@ -70,30 +70,17 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
 
         // Initialize views
         viewModelChat =  new ViewModelProvider(this).get(ViewModelChat.class);
-        if (picProf != null) {
-            int maxWidth = avatarImageView.getMaxWidth();
-            int maxHeight = avatarImageView.getMaxHeight();
 
-            int imageWidth = picProf.getWidth();
-            int imageHeight = picProf.getHeight();
 
-            if (imageWidth <= maxWidth && imageHeight <= maxHeight) {
-                avatarImageView.setImageBitmap(picProf);
-            } else {
-                // Image is too large, handle the case accordingly
-                avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
-            }
-        } else {
-            avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
-        }
-
+        // Initialize views
+        avatarImageView = findViewById(R.id.avatarImageView);
         nameTextView = findViewById(R.id.nameTextView);
         deleteChatButton = findViewById(R.id.actionButton);
         messageEditText = findViewById(R.id.messageEditText);
         submitButton = findViewById(R.id.submitButton);
         messageRecyclerView = findViewById(R.id.messageRecyclerView);
-        messageList = curChat.getMessages();
-        messageAdapter = new MessageAdapter(messageList, curUser.getUsername());
+        messageList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(messageList,curUser.getUsername());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(layoutManager);
         messageRecyclerView.setAdapter(messageAdapter);
@@ -103,7 +90,7 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
 
 
         Bitmap bitmap = decodeBase64(pic);
-        if (bitmap != null) {
+        if (bitmap != null && isImageSizeValid(bitmap,avatarImageView)) {
             avatarImageView.setImageBitmap(bitmap);
         } else {
             avatarImageView.setImageResource(R.mipmap.ic_default_avatar);
@@ -237,6 +224,16 @@ public class ChatActivity extends DarkAppCompact implements DeleteContactListene
         super.onResume();
         // Set the updated adapter to the RecyclerView
         messageRecyclerView.setAdapter(messageAdapter);
+    }
+
+    private boolean isImageSizeValid(Bitmap bitmap,ImageView avatarImageView) {
+        int maxWidth = avatarImageView.getMaxWidth();
+        int maxHeight = avatarImageView.getMaxHeight();
+
+        int imageWidth = bitmap.getWidth();
+        int imageHeight = bitmap.getHeight();
+
+        return (imageWidth <= maxWidth && imageHeight <= maxHeight);
     }
 }
 

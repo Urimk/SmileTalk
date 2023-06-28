@@ -15,12 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smiletalk.R;
+import com.example.smiletalk.entities.Message;
 import com.example.smiletalk.entities.User;
 import com.example.smiletalk.entities.Chat;
 import com.example.smiletalk.screens.ChatActivity;
 import com.example.smiletalk.screens.DeleteContactListener;
 import com.example.smiletalk.screens.Login;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
