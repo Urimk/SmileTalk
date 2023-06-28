@@ -1,5 +1,9 @@
 # SmileTalk
-For the app to work, first start the server ....................
+For the app to work, first start by running the command: mongod in the server app to start the DB.
+
+Then run the command: npm i express body-parser cors custom-env mongoose jsonwebtoken ws in the server app to run the server.
+
+Lastly, run the app (thorugh android studio's emulator or a real device)
 
 The app has 5 Screens:
 
@@ -21,6 +25,6 @@ The app has 5 Screens:
 
    A delete chat button is also in this screen. 
 
-5. Setting screen with the ability to enable Dark Mode and to change the ip of the server which holds and sends the data.
+5. Setting screen with the ability to enable Dark Mode and to change the ip of the server which holds and sends the data, and < to go backto the sign in screen.
 
 To go back to the previous screen, you can also press the phone's back button.
