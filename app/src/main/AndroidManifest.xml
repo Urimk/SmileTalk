@@ -18,7 +18,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <service
-            android:name=".MassageNotification"
+            android:name=".services.MassageNotification"
             android:enabled="true"
             android:exported="true"
             android:permission="TODO">
@@ -28,23 +28,23 @@
         </service>
 
         <activity
-            android:name=".BaseUrl"
+            android:name=".API.BaseUrl"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".screens.Login"
             android:exported="true">
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".screens.SettingsActivity"
             android:exported="true">
         </activity>
 
 
         <activity
-            android:name=".ContactsActivity"
+            android:name=".screens.ContactsActivity"
             android:exported="true"/>
         <activity
-            android:name=".SighIn"
+            android:name=".screens.SighIn"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +54,7 @@
         </activity>
 
         <activity
-            android:name=".ChatActivity"
+            android:name=".screens.ChatActivity"
             android:exported="true"/>
 
 
