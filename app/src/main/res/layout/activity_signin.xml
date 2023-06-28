@@ -15,15 +15,19 @@
         />
 
     <TextView
+        android:id="@+id/signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
         android:text="Sign In"
-        android:id="@+id/signIn"
         android:textColor="@color/white"
         android:textSize="35dp"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
-        android:gravity="center"/>
+        android:textStyle="bold" />
 
     <EditText
         android:layout_width="match_parent"
@@ -118,37 +122,47 @@
         android:textSize="20sp"
         android:layout_marginTop="16dp"
         android:gravity="center"/>
-
-    <!-- Button for adding Profile Picture -->
-    <Button
-        android:id="@+id/addProfilePicButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/profilePicLabel"
         android:layout_centerHorizontal="true"
-        android:background="@color/black"
-        android:text="Add Picture"
-        android:layout_marginTop="16dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:orientation="horizontal"
+        android:id="@+id/buttoms"
+        android:layout_marginTop="20dp">
+        >
 
-    <!-- Button for adding Profile Picture -->
-    <Button
-        android:id="@+id/signInBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addProfilePicButton"
-        android:layout_centerHorizontal="true"
-        android:background="@color/black"
-        android:text="@string/sign_in"
-        android:layout_marginTop="16dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        <Button
+            android:id="@+id/addProfilePicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/black"
+            android:text="Add Picture"
+            android:layout_marginTop="16dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp" />
+
+        <!-- Button for adding Profile Picture -->
+        <Button
+            android:id="@+id/signInBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addProfilePicButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:background="@color/black"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/sign_in" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/signInBottom"
+        android:layout_below="@id/buttoms"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
@@ -158,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="@color/blue"
             android:layout_marginBottom="16dp" />
 
@@ -166,10 +180,10 @@
             android:id="@+id/loginLinkTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:text="@string/already_registered_click_here"
-            android:textSize="16sp"
             android:textColor="@color/blue"
-            android:layout_marginLeft="16dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 </RelativeLayout>
